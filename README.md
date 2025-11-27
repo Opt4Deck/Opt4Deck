@@ -81,7 +81,7 @@
       author = {Giannis Serafeim},
       title  = {Opt4Deck: A New Optimization Platform},
       year   = {2025},
-      note   = {Available at: https://github.com/...}
+      note   = {Available at: https://github.com/Opt4Deck/Opt4Deck}
    }
       </code>
    </pre>
