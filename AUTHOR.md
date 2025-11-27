@@ -1,6 +1,6 @@
 # About the Author - Giannis Serafeim
 
-<p style="text-align: justify;">
+<div align="justify">
 Giannis Serafeim is a Mechanical Engineer and a graduate of the National Technical University of Athens (2016). He completed his Ph.D. in 2023 with the dissertation titled 'Multi-disciplinary Design Optimization of Wind Turbine Blades
 Including Passive Load Control Techniques'. His research and professional activities include, among others, floating wind turbine design, aeroelastic analysis, fatigue assessment and Life-Time estimation of wind farms, as well as techno-economic evaluation of complex energy systems.
 
@@ -10,4 +10,4 @@ He is the creator and lead developer of **Opt4Deck**, a modular optimization-alg
 
 <strong>Linked-in:</strong> www.linkedin.com/in/giannis-serafeim  
 <strong>E-mail:</strong> giannisserafeim@gmail.com
-</p>
+</div>
