@@ -46,7 +46,7 @@
       <li><strong>./LICENSE</strong> — The license under which the project is released.</li>
       <li><strong>./AUTHOR.md</strong> — A brief presentation of the creator and contact information.</li>
    </ul>
-   <h2>📌Planned Release Schedule</h2>
+   <h3>📌Planned Release Schedule</h3>
    <p>The material included in Opt4Deck will be uploaded to GitHub progressively, with each optimization method and its accompanying documentation becoming available as soon as it is finalized. Until the full structure of the platform is complete, the schedule below provides an overview of the planned release sequence for the individual files.</p>
    <table class='simplex-table'>
       <thead>
