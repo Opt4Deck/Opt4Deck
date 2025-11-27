@@ -9,5 +9,5 @@ He has developed computational tools that integrate numerical methods and optimi
 <p style="text-align: justify;">
 He is the creator and lead developer of **Opt4Deck**, a modular optimization-algorithm platform designed for applications in mechanical design, academic research, and industrial analysis.
 </p>
-**Linked-in:** www.linkedin.com/in/giannis-serafeim  
+*Linked-in:* www.linkedin.com/in/giannis-serafeim  
 **E-mail:** giannisserafeim@gmail.com
