@@ -1,0 +1,336 @@
+<!-- signature -->
+<style>
+:root {--main-text-color: black;}
+body {color: var(--main-text-color); font-family: sans-serif; text-align: justify;}
+h1,h2,h3,h4,h5,h6 {color: var(--main0text-color);}
+p,li,span {color: var(--main-text-color);}
+</style>
+<div style="font-family:Arial, Helvetica, sans-serif; margin:0; padding:0;">
+  <div style="font-size:14px; font-weight:600; margin-bottom:4px;">
+    Giannis Serafeim &#8226; Mechanical Engineer, PhD.
+  </div>
+  <!-- Προαιρετικά: μικρότερη γραμμή με θέση/εταιρεία -->
+  <div style="font-size:12px;">Opt4Deck — Founder</div>
+</div>
+
+<head>
+  <meta charset="utf-8">
+  <title>SIMPLEX</title>
+  <!-- MathJax CDN (v3) -->
+  <script>
+    window.MathJax = {tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<h1 style="text-align: center;">SIMPLEX</h1>
+
+<br>
+<section>
+   <h3>1. Introduction</h3>
+      <p>Linear Programming (LP) constitutes a fundamental branch of operations research and mathematical optimization. The primary objective is to determine the optimal value of a linear objective function subject to a series of linear constraints. This methodology finds extensive applications in industrial production, resource allocation, economic modeling, supply-chain logistics, and strategic planning.</p>
+      <p>The Simplex algorithm, developed by George Dantzig (1947), remains one of the most widely adopted and computationally efficient methods for solving LP problems. It systematically navigates the vertices of the feasible region, improving the objective function value at each iteration until an optimal solution is reached. Despite its conceptual simplicity, the method demonstrates remarkable performance across various domains, including production scheduling, transportation optimization, portfolio management, and energy system design.</p>
+      <p>The purpose of this manual is twofold: first, to provide a concise and structured presentation of the theoretical foundations of the Simplex method, and second, to support its practical implementation as a computational module within the Opt4Deck platform. Through illustrative examples and detailed step-by-step demonstrations, the reader is equipped with both a solid theoretical foundation and a dependable computational tool for solving real-world linear maximization problems.</p>
+</section>
+
+<br>
+<section>
+   <h3>2. Theory of Simplex Method</h3>
+   <p>This section provides the theoretical foundations of the Simplex method. It introduces the mathematical formulation of linear programming problems, explains the conversion of inequalities into equalities using slack variables, and outlines the geometric interpretation that relates algebraic operations to movements along the vertices of the feasible region. The section concludes with the presentation of the Simplex tableau and the iterative algorithmic procedure leading to the optimal solution.</p>
+   <section>
+      <h4>2.1. Standard Form of LPP</h4>
+      <p>The standard form of a Linear Programming Problem (LPP) provides a consistent mathematical structure for expressing optimization problems in a form suitable for the Simplex method. In this formulation, the goal is to maximize a linear objective function subject to a set of linear constraints, each of which represents a limitation on available resources or system parameters. All variables are required to be non-negative to ensure meaningful and interpretable solutions. The standard form can be expressed as:
+         <table style='margin: 0 auto;'>
+            <tr> <th>max:</th> <td>\(Z=c_1x_1+c_2x_2+...+c_nx_n\)</tr>
+            <tr> <th>s.t.</th> <td>\(a_{11}x_1+a_{12}x_2+...+a_{1n}x_n \le b_1\)</tr>
+            <tr> <td></td>     <td style='text-align: center;'>.............    </tr>
+            <tr> <td></td>     <td>\(a_{m1}x_1+a_{m2}x_2+...+a_{mn}x_n \le b_m\)</tr>
+            <tr> <td></td>     <td>\(x_1,x_2,...,x_n \ge 0\)                    </tr>
+         </table>
+         where,
+         <ul>
+            <li>\(x_1,x_2,...,x_n\): decision variables,</li>
+            <li>\(c_j\): coefficients of the objective function,</li>
+            <li>\(a_{ij}\): coefficients of the constraints,</li>
+            <li>\(b_i\): right-hand side constants of the constraints.</li>
+         </ul>
+      </p>
+      <p>This structure allows for systematic algebraic manipulation and the direct application of the Simplex algorithm. It serves as the foundation for converting the problem into the tabular (tableau) representation, which is the core computational framework of the method.</p>
+   </section>
+   <section>
+      <h4>2.2. Conversion to Standard Form</h4>
+      <p>Before applying the Simplex method, a linear programming problem must first be expressed in standard form, so that all constraints are expressed as equalities and all variables are non-negative. This transformation enables the use of a consistent algebraic procedure and guarantees the applicability of the Simplex algorithm.</p>
+      <p>In most practical optimization problems, constraints are expressed as inequalities of the \(\le\) type. These can be converted into equalities by introducing slack variables, which represent the unused portion of available resources. For example, the inequality \(x_1+2x_2 \le 6\) is transformed into the equality \(x_1+2x_2+s_1 = 6\), where \(s_1 \ge 0\) is a slack variable associated with the first constraint.</p>
+      <p>The same process is applied to all inequalities of type \(\le\), introducing one distinct slack variable for each constraint. Through this transformation, the system of inequalities becomes an equivalent system of equations that satisfies the necessary conditions for constructing the initial Simplex tableau.</p>
+      <p>This procedure maintains the mathematical equivalence with the original formulation while establishing a structured framework suitable for iterative computation and systematic analysis.</p>
+   </section>
+   <section>
+      <h4>2.3. Geometric Interpretation</h4>
+      <figure style='float: right; margin: 0 0 1em 1em; width: 500px;'>
+         <img src='graphic.png' alt='graphic' style='width: 100%; display: block;'>
+         <figcaption style='font-size: 0.8em; text-align: center; font-style: italic;'>Graphical illustration of Simplex method.</figcaption>
+      </figure>
+      <p>The Simplex method can also be understood from a geometric perspective, providing valuable insight into its underlying principles and computational behavior. In this interpretation, the feasible region of a linear programming problem corresponds to a convex polyhedron in general (a convex polygon in two dimensions) formed by the intersection of the half-spaces defined by the system’s linear constraints.</p>
+      <p>Each vertex of this polyhedron represents a basic feasible solution, i.e., a solution that satisfies all constraints simultaneously. The fundamental property of linear programming is that, if an optimal solution exists, it will always occur at one of these vertices.</p>
+      <p>The Simplex algorithm exploits this property by systematically moving along the edges of the feasible region — from one vertex to another — in such a way that the value of the objective function is strictly improved or remains unchanged. The process begins from an initial basic feasible solution and proceeds until no further improvement is possible, at which point the optimal solution has been reached.</p>
+      <p>This geometric interpretation highlights why the Simplex method does not require evaluating every feasible point within the region. Instead, it focuses on a selective traversal of vertices, dramatically reducing computational effort while ensuring convergence to the global optimum of the linear program, provided the problem is feasible and bounded.</p>
+   </section>
+   <section>
+      <h4>2.4. The Simplex Tableau</h4>
+      <p>The Simplex tableau forms the central computational framework of the Simplex method. It provides a compact and organized representation of all numerical data required for each iteration, allowing the algorithm to advance systematically from one basic feasible solution to the next.</p>
+      <p>In each iteration, the tableau summarizes the current state of the problem — including the basic variables, the constraint coefficients, the right-hand-side values, and the computed quantities used to determine the next pivot operation. Through this structured layout, the tableau ensures both transparency and computational efficiency.</p>
+      <p>The standard structure of a Simplex tableau includes:
+         <ul>
+            <li>The coefficients of the decision variables in the objective function (\(C_j\)).</li>
+            <li>The coefficients of the constraints forming the matrix \(A\).</li>
+            <li>The right-hand side constants (\(b\)).</li>
+            <li>The basic variables and their associated objective coefficients (\(C_d\)).</li>
+            <li>The computed quantities \(Z_j\) and the reduced costs \(C_j-Z_j\).</li>
+         </ul>
+      </p>
+      <p>The values \(Z_j\) represent the current contribution of each non-basic variable to the overall objective function based on the existing basis, while the differences \(C_j-Z_j\) indicate the potential improvement (or deterioration) in the objective value if a variable enters the basis — hence the term reduced cost.</p>
+      <p>The tableau framework enables direct execution of pivot operations through linear transformations. In each iteration, one variable enters the basis and one leaves it. The tableau is then updated accordingly, and the procedure repeats until all reduced costs satisfy the optimality condition \(C_j-Z_j \le 0\), signifying that the optimal solution has been reached.</p>
+   </section>
+   <section>
+      <h4>2.5. The Simplex Algorithm</h4>
+      <p>The Simplex algorithm is an iterative computational procedure designed to identify the optimal solution of a linear programming problem by successively improving the value of the objective function. Starting from an initial basic feasible solution, the algorithm systematically performs pivot operations that transition from one vertex of the feasible region to another, until no further improvement is possible.</p>
+      <p>At each iteration, the algorithm evaluates the current tableau and determines which variable should enter and which should leave the basis. This process guarantees convergence to an optimal solution, provided that the problem is feasible and bounded.</p>
+      <p>The main steps of the algorithm can be summarized as follows:
+         <ol type='i'>
+            <li>
+               <u>Optimality Check (Termination Criterion):</u><br>
+               Compute the reduced costs \(C_j-Z_j\) for all non-basic variables.<br>
+               If all values satisfy (\(C_j-Z_j \le 0\)), the current solution is optimal and the algorithm terminates.
+            </li>
+            <li>
+               <u>Selection of Entering Variable:</u><br>
+               Identify the variable with the largest positive value of \(C_j-Z_j\).<br>
+               This variable has the greatest potential to increase the objective function and is selected to enter the basis.
+            </li>
+            <li>
+               <u>Ratio Test (Leaving Variable Determination):</u><br>
+               For each constraint, calculate the ratio \(b_i/a_{ij}\), where \(a_{ij}\) is the coefficient of the entering variable in \(i\)-th row.<br>
+               Only positive values of \(a_{ij}\) are considered, since non-positive entries cannot restrict the movement along the entering direction.<br>
+               The smallest non-negative ratio identifies the leaving variable.
+            </li>
+            <li>
+               <u>Pivoting and Tableau Update:</u><br>
+               Perform a linear transformation of the tableau to make the entering variable basic and the leaving variable non-basic.<br>
+               All rows are updated accordingly to maintain the feasibility of the system.
+            </li>
+         </ol>
+      </p>
+      <p>The procedure is then repeated starting from the first step, using the updated tableau. The algorithm continues to iterate through the same sequence of steps — evaluating optimality, selecting the entering and leaving variables, and performing the pivot operation — until no further improvement in the objective function is possible. At this stage, the final tableau provides both the optimal value of the objective function and the values of the decision variables corresponding to the optimal solution.</p>
+   </section>
+   <section>
+      <h4>2.6. Termination and Interpretation</h4>
+      <p>The termination of the Simplex algorithm occurs when the optimality condition \(C_j-Z_j \le 0\). At this point, no non-basic variable can enter the basis to further improve the value of the objective function, and the current solution is therefore optimal.</p>
+      <p>The corresponding final tableau provides complete information about the optimal state of the problem. The objective function value is read directly from the last entry in the \(Z_j\) row (i.e., the value in its rightmost column), while the values of the decision variables are obtained as follows:
+         <ul>
+            <li>Each basic variable takes the value of the right-hand side entry (\(b_i\)) in the row where it appears.</li>
+            <li>Each non-basic variable is assigned the value \(0\), since it is not part of the current basis.</li>
+         </ul>
+      </p>
+      <p>If, during any iteration, all entries in the pivot column are non-positive, no valid ratio can be computed. In this case, the problem is classified as unbounded, meaning that the objective function can increase indefinitely without violating any constraints. In such cases, no finite optimal solution exists.</p>
+      <p>The final tableau thus encapsulates the entire result of the optimization process, providing both the numerical solution (values of variables) and the analytical interpretation of the outcome. It serves as a complete summary of the Simplex procedure, confirming optimality and revealing the structure of the optimal solution.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>3. Step-by-step Example</h3>
+   <style>
+      table.simplex-table { border-collapse: collapse; width: 100%; text-align: center; margin: 1rem 0; table-layout: fixed;}
+      table.simplex-table th, table.simplex-table td { border: 1px solid #999; padding: 6px; }
+   </style>
+   <p>This section presents a complete worked example of the Simplex method, illustrating every stage of the procedure, including the formulation of the LP in standard form, the construction of the initial tableau, the identification of the entering and leaving variables through reduced costs and the ratio test, execution of pivot operations, and interpretation of the final tableau. The example is designed to be reproducible and is fully aligned with the accompanying Python module, enabling the reader to verify each iteration and the optimal solution.</p>
+   <section>
+      <h4>3.1. Problem Formulation</h4>
+      <p>The first step in applying the Simplex method is to express the optimization problem in standard form, represented as linear expressions involving non-negative variables. In this example, we consider a maximization problem, where the objective is to determine the combination of decision variables that yields the maximum value of a given linear function, subject to a set of resource constraints.</p>
+      <table style='margin: 0 auto;'>
+         <tr> <th>max:</th> <td>\(Z=7x_1+6x_2\)      </td> </tr>
+         <tr> <th>s.t.</th> <td>\(2x_1+4x_2 \le 16\) </td> </tr>
+         <tr> <td></td>     <td>\(3x_1+2x_2 \le 12\) </td> </tr>
+         <tr> <td></td>     <td>\(x_1,x_2 \ge 0\)    </td> </tr>
+      </table>
+      <p>The problem is formulated by defining:
+         <ul>
+            <li>the objective function, representing the objective criterion to be maximized, and</li>
+            <li>the constraints, representing the system’s limitations in the form of linear inequalities.</li>
+         </ul>
+      </p>
+      <p>This mathematical formulation provides the foundation for constructing the initial Simplex tableau, which will be used to begin the iterative optimization process.</p>
+   </section>
+   <section>
+      <h4>3.2. Step-1: Initial Tableau</h4>
+      <p>The first tableau of the Simplex method corresponds to the initial basic feasible solution, which is constructed by introducing slack variables into each inequality constraint. Each slack variable represents the unused portion of a resource and converts the inequality into an equality, allowing the algorithm to operate on a consistent system of linear equations.</p>
+      <p>Once the slack variables are added, all coefficients of the decision and slack variables are organized in tabular form. This arrangement constitutes the initial Simplex tableau, which summarizes the entire problem in a structured and computationally convenient format.</p>
+      <table class='simplex-table'>
+         <tr>                                   <th></th>                                                  <th></th>                                   <th style='border-left: 2px solid; background: #ffeeba;'>\(\boldsymbol{x_1}\)</th>             <th>\(\boldsymbol{x_2}\)</th>               <th>\(\boldsymbol{s_1}\)</th>               <th style='border-right: 2px solid;'>\(\boldsymbol{s_2}\)</th>            <th></th>                                    <th></th>                                                              </tr>
+         <tr>                                   <th>Basis</th>                                             <th>\(\boldsymbol{C_j}\)</th>               <td style='border-left: 2px solid; background: #ffeeba;'>\(7\)</td>                            <td>\(6\)</td>                              <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(0\)</td>                           <th>\(\boldsymbol{b}\)</th>                  <th>ratio</th>                                                         </tr>
+         <tr style='border-top: 2px solid;'>    <th>\(\boldsymbol{s_1}\)</th>                              <td>\(0\)</td>                              <td style='border-left: 2px solid; background: #ffeeba;'>\(2\)</td>                            <td>\(4\)</td>                              <td>\(1\)</td>                              <td style='border-right: 2px solid;'>\(0\)</td>                           <td>\(16\)</td>                              <td>\(8\)</td>                                                         </tr>
+         <tr style='border-bottom: 2px solid;'> <th style='background: #ffeeba;'>\(\boldsymbol{s_2}\)</th> <td style='background: #ffeeba;'>\(0\)</td> <td style='border-left: 2px solid; background: #ffeeba;'>\(3\)</td>                            <td style='background: #ffeeba;'>\(2\)</td> <td style='background: #ffeeba;'>\(0\)</td> <td style='border-right: 2px solid; background: #ffeeba;'>\(1\)</td>      <td style='background: #ffeeba;'>\(12\)</td> <td style='background: #ffeeba; outline: 3px dashed black;'>\(4\)</td> </tr>
+         <tr>                                   <th>\(\boldsymbol{Z_j}\)</th>                              <th></th>                                   <td style='border-left: 2px solid; background: #ffeeba;'>\(0\)</td>                            <td>\(0\)</td>                              <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(0\)</td>                           <td>\(0\)</td>                               <td></td>                                                              </tr>
+         <tr>                                   <th>\(\boldsymbol{C_j-Z_j}\)</th>                          <th></th>                                   <td style='border-left: 2px solid; background: #ffeeba; outline: 3px dashed black;'>\(7\)</td> <td>\(6\)</td>                              <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(0\)</td>                           <td></td>                                    <td>elements \(\ge 0\)</td>                                            </tr>
+      </table>
+      <p>The entering variable is identified by selecting the column with the largest positive value in the \(C_j-Z_j\) row, indicating the greatest potential to improve the objective function. The pivot row is then determined through the minimum ratio test, which ensures that the next solution remains feasible. The intersection of these two selections defines the pivot element, used to update the tableau in the following iteration. This initial tableau thus serves as the foundation of the Simplex procedure, establishing the reference point from which the iterative optimization process begins.</p>
+   </section>
+   <section>
+      <h4>3.3. Step-2: Middle Tableau</h4>
+      <p>At this stage, the first pivot operation has been performed, updating the tableau to reflect a new basic feasible solution. The entering variable, identified from the previous step by the highest positive \(C_j-Z_j\), has now entered the basis, replacing the variable that was removed according to the minimum ratio test. The updated tableau displays the revised basis, the adjusted constraint coefficients, and the recalculated reduced costs (\(C_j-Z_j\)). These updated quantities indicate how the inclusion of the entering variable has affected the structure and value of the objective function.</p>
+      <table class='simplex-table'>
+         <tr>                                   <th></th>                                                  <th></th>                                   <th style='border-left: 2px solid;'>\(\boldsymbol{x_1}\)</th>       <th style='background: #ffeeba;'>\(\boldsymbol{x_2}\)</th>                       <th>\(\boldsymbol{s_1}\)</th>               <th style='border-right: 2px solid;'>\(\boldsymbol{s_2}\)</th>                  <th></th>                                   <th></th>                                                              </tr>
+         <tr>                                   <th>Basis</th>                                             <th>\(\boldsymbol{C_j}\)</th>               <td style='border-left: 2px solid;'>\(7\)</td>                      <td style='background: #ffeeba;'>\(6\)</td>                                      <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(0\)</td>                                 <th>\(\boldsymbol{b}\)</th>                 <th>ratio</th>                                                         </tr>
+         <tr style='border-top: 2px solid;'>    <th style='background: #ffeeba;'>\(\boldsymbol{s_1}\)</th> <td style='background: #ffeeba;'>\(0\)</td> <td style='border-left: 2px solid; background: #ffeeba;'>\(0\)</td> <td style='background: #ffeeba;'>\(\frac{8}{3}\)</td>                            <td style='background: #ffeeba;'>\(1\)</td> <td style='border-right: 2px solid; background: #ffeeba;'>\(-\frac{2}{3}\)</td> <td style='background: #ffeeba;'>\(8\)</td> <td style='background: #ffeeba; outline: 3px dashed black;'>\(3\)</td> </tr>
+         <tr style='border-bottom: 2px solid;'> <th>\(\boldsymbol{x_1}\)</th>                              <td>\(7\)</td>                              <td style='border-left: 2px solid;'>\(1\)</td>                      <td style='background: #ffeeba;'>\(\frac{2}{3}\)</td>                            <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(\frac{1}{3}\)</td>                       <td>\(4\)</td>                              <td>\(6\)</td>                                                         </tr>
+         <tr>                                   <th>\(\boldsymbol{Z_j}\)</th>                              <th></th>                                   <td style='border-left: 2px solid;'>\(7\)</td>                      <td style='background: #ffeeba;'>\(\frac{14}{3}\)</td>                           <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(\frac{7}{3}\)</td>                       <td>\(28\)</td>                             <td></td>                                                              </tr>
+         <tr>                                   <th>\(\boldsymbol{C_j-Z_j}\)</th>                          <th></th>                                   <td style='border-left: 2px solid;'>\(0\)</td>                      <td style='background: #ffeeba; outline: 3px dashed black;'>\(\frac{4}{3}\)</td> <td>\(0\)</td>                              <td style='border-right: 2px solid;'>\(-\frac{7}{3}\)</td>                      <td></td>                                   <td>elements \(\ge 0\)</td>                                            </tr>
+      </table>
+      <p>This intermediate tableau provides a clear view of the transition between feasible solutions. It allows the analyst to verify the correctness of the pivot operation and to observe the gradual improvement of the objective function toward optimality.</p>
+      <p>The process then proceeds iteratively: the next entering variable is selected based on the new \(C_j-Z_j\) values, followed again by the ratio test and another pivot update. This step-by-step progression forms the core mechanism of the Simplex procedure.</p>
+   </section>
+   <section>
+      <h4>3.4. Step-3: Final Tableau</h4>
+      <p>At this final stage, all reduced costs satisfy the optimality condition \(C_j-Z_j \le 0\), indicating that no further improvement of the objective function is possible. The final tableau thus represents the optimal solution of the linear programming problem.</p>
+      <p>In this tableau, the set of basic variables and their corresponding values can be directly read from the right-hand side column (\(b_i\)). The objective function value appears in the last entry of the \(Z_j\) row, representing the maximum attainable value under the given constraints.</p>
+      <table class='simplex-table'>
+         <tr>                                   <th></th>                         <th></th>                     <th style='border-left: 2px solid;'>\(\boldsymbol{x_1}\)</th> <th>\(\boldsymbol{x_2}\)</th>  <th>\(\boldsymbol{s_1}\)</th> <th style='border-right: 2px solid;'>\(\boldsymbol{s_2}\)</th> <th></th>                                                                                                          </tr>
+         <tr>                                   <th>Basis</th>                    <th>\(\boldsymbol{C_j}\)</th> <td style='border-left: 2px solid;'>\(7\)</td>                <td>\(6\)</td>                 <td>\(0\)</td>                <td style='border-right: 2px solid;'>\(0\)</td>                <th>\(\boldsymbol{b}\)</th>                                                                                        </tr>
+         <tr style='border-top: 2px solid;'>    <th>\(\boldsymbol{x_2}\)</th>     <td>\(6\)</td>                <td style='border-left: 2px solid;'>\(0\)</td>                <td>\(1\)</td>                 <td>\(\frac{3}{8}\)</td>      <td style='border-right: 2px solid;'>\(-\frac{1}{4}\)</td>     <td style='background: repeating-linear-gradient(45deg,#f9f9f9,#f9f9f9 6px,#dcdcdc 6px,#dcdcdc 12px);'>\(3\)</td>  </tr>
+         <tr style='border-bottom: 2px solid;'> <th>\(\boldsymbol{x_1}\)</th>     <td>\(7\)</td>                <td style='border-left: 2px solid;'>\(1\)</td>                <td>\(0\)</td>                 <td>\(-\frac{1}{4}\)</td>     <td style='border-right: 2px solid;'>\(\frac{1}{2}\)</td>      <td style='background: repeating-linear-gradient(45deg,#f9f9f9,#f9f9f9 6px,#dcdcdc 6px,#dcdcdc 12px);'>\(2\)</td>  </tr>
+         <tr>                                   <th>\(\boldsymbol{Z_j}\)</th>     <th></th>                     <td style='border-left: 2px solid;'>\(7\)</td>                <td>\(6\)</td>                 <td>\(\frac{1}{2}\)</td>      <td style='border-right: 2px solid;'>\(2\)</td>                <td style='background: repeating-linear-gradient(45deg,#ffeaea,#ffeaea 6px,#ffb3b3 6px,#ffb3b3 12px);'>\(32\)</td> </tr>
+         <tr>                                   <th>\(\boldsymbol{C_j-Z_j}\)</th> <th></th>                     <td style='border-left: 2px solid;'>\(0\)</td>                <td>\(0\)</td>                 <td>\(-\frac{1}{2}\)</td>     <td style='border-right: 2px solid;'>\(-2\)</td>               <td>all elements \( \le 0\)</td>                                                                                   </tr>
+      </table>
+      <p>This final tableau provides not only the numerical solution but also a clear analytical interpretation of the optimization process. It verifies that the solution satisfies all constraints and confirms the termination of the algorithm. From this point, the decision variables and the corresponding optimal objective value can be directly extracted as the outcome of the Simplex method.</p>
+   </section>
+   <section>
+      <h4>3.5. Discussion</h4>
+      <p>The step-by-step example demonstrates the effectiveness and methodological clarity of the Simplex method as a systematic approach for solving linear programming problems. Through a sequence of tableau transformations, the algorithm successfully identified the optimal solution by progressively improving the objective function value while maintaining feasibility at every step.</p>
+      <p>The pivot operations guided the transition from one basic feasible solution to the next, ensuring that each new tableau represented a valid and strictly improved state of the problem. The final tableau confirmed the termination condition and provided a complete set of results — including the optimal values of the decision variables and the maximum value of the objective function.</p>
+      <p>This step-by-step demonstration highlights the transparency, robustness, and computational efficiency of the Simplex method. Moreover, it illustrates how the algorithm’s logic can be directly implemented within a computational environment, such as the accompanying Python implementation, enabling both educational and professional applications in optimization and decision analysis.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>4. Overview and Usage</h3>
+   <p>This section presents the structure and practical usage of the Simplex solver. The file <code style='display: inline;'>simplex.py</code> provides a ready-to-use implementation of the Simplex method for solving linear programming problems. Its usage is straightforward and centers on correctly preparing the input data and interpreting the results returned by the solver. The user only needs to define the input in the prescribed format and call the appropriate function. The entire procedure is executed automatically, and each step of the computation is recorded in a log file for reference and verification.</p>
+   <section>
+      <h4>4.1. Inputs <i style='font-weight: normal;'>- What the user must provide</i></h4>
+      <p>The input is provided as nested lists, representing the augmented matrix of the problem, where:
+         <ul>
+            <li>the first row contains the coefficients of the objective function,</li>
+            <li>and the remaining rows represent the constraints, including both their coefficients and right-hand-side values.</li>
+         </ul>
+      </p>
+      <p>The augmented matrix is a compact representation that consolidates the coefficients of the objective function, the constraint system, and the slack variables into a single structured format. This unified format simplifies data handling and enables the solver to systematically construct and update the Simplex tableau.</p>
+      <p>An example of augmented matrix, as implemented in <code style='display: inline;'>simplex.py</code>, is shown below:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+Amat = [[3.0, 5.0, 0.0, 0.0, 0.0, -1.0],
+        [1.0, 2.0, 1.0, 0.0, 0.0,  8.0],
+        [3.0, 2.0, 0.0, 1.0, 0.0, 12.0],
+        [1.0, 1.0, 0.0, 0.0, 1.0,  5.0]]
+            </code>
+         </pre>
+      </p>
+      <p>In this representation, the first row corresponds to the objective function \(Z=3x_1+5x_2\), while the subsequent rows define the constraints, with their right-hand-side values placed in the last column.</p>
+   </section>
+   <section>
+      <h4>4.2. Module Call</h4>
+      <p>The entire solution process is executed with a single command:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+import simplex
+res = simplex.main(Aug=Amat)
+            </code>
+         </pre>
+      </p>
+      <p>The function <code style='display: inline;'>simplex.main()</code> applies the Simplex method to the provided augmented matrix and returns the optimal solution. All intermediate steps are handled automatically by the solver, requiring no additional user intervention.</p>
+   </section>
+   <section>
+      <h4>4.3. Outputs <i style='font-weight: normal;'>- what is returned</i></h4>
+      <p>The returned object <code style='display: inline;'>res</code> contains the following elements:
+         <ul>
+            <li>the optimal value of the objective function (e.g., <code style='display: inline;'>21.0</code>), and</li>
+            <li>the optimal values of the decision variables (e.g., <code style='display: inline;'>[2.0,3.0]</code>).</li>
+         </ul>
+      </p>
+      <p>Example output:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+>>print(res)
+            </code>
+            <code>
+21.0, [2.0,3.0]
+            </code>
+         </pre>
+      </p>
+      <p>This is interpreted as: the optimal objective value is \(Z=21.0\), and the optimal decision variable values are \(x_1=2\) and \(x_2=3\). The first element corresponds to the optimal value of the objective function, while the list contains the optimal values of the decision variables.</p>
+   </section>
+   <section>
+      <h4>4.4. Notes and Execution</h4>
+      <p>Additional notes are provided below:
+         <ul>
+            <li>It is not necessary for the user to understand the internal mechanics of the algorithm in order to use the solver effectively.</li>
+            <li>Correct input formatting and proper interpretation of the returned results are sufficient for effective and reliable use of the solver.</li>
+            <li>The files <code style='display: inline;'>example1.py</code>, <code style='display: inline;'>example2.py</code> and <code style='display: inline;'>example3.py</code> contain three complete usage examples, which may serve as practical templates for constructing and executing Simplex problems.</li>
+            <li>The current implementation handles maximization problems with constraints, consistent with the standard Simplex framework.</li>
+         </ul>
+      </p>
+      <p>An illustrative workflow diagram follows, presenting the step-by-step execution of a specific example using the <code style='display: inline;'>simplex.main()</code> function.
+         <figure style='margin: 0 auto; '>
+            <img src='executable.png' alt='executable' style='display:block; margin:0 auto; width:1000px;'>
+            <figcaption style='font-size: 0.8em; text-align: center; font-style: italic;'>Illustration of the execution flow of the Simplex method, as implemented in Opt4Deck.</figcaption>
+         </figure>
+      </p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>5. Remarks and Considerations</h3>
+   <p>A functional implementation of the Simplex method for linear programming maximization problems is presented. The algorithm is designed with an emphasis on usability, clear structure, and efficient handling of a broad range of maximization problems with constraints. It offers a reliable foundation for practical applications and provides a flexible foundation for future extensions and methodological enhancements.</p>
+   <section>
+      <h4>5.1. Capabilities and Assumptions</h4>
+      <p>The current implementation of the solver includes the following capabilities and assumptions:
+         <ul>
+            <li>Supports maximization problems with non-negative decision variables only.</li>
+            <li>Accepts inequality constraints formatted as described in this manual.</li>
+            <li>Requires that the input be formatted exactly as specified in the preceding sections.</li>
+            <li>Produces output containing both the optimal objective function value and the corresponding vector of optimal decision variable values.</li>
+         </ul>
+      </p>
+   </section>
+   <section>
+      <h4>5.2. Possible Extensions</h4>
+      <p>Future improvements and extensions may include:
+         <ul>
+            <li>Support for solving minimization problems directly.</li>
+            <li>Automatic handling of equality constraints, as well as additional forms of inequality constraints.</li>
+            <li>More robust input validation and improved, user-friendly diagnostic reporting.</li>
+            <li>Development of a graphical user interface (GUI) to further enhance usability and accessibility.</li>
+         </ul>
+      </p>
+   </section>
+   <section>
+      <h4>5.3. Collaboration and Development</h4>
+      <p>This project is developed under the Opt4Deck initiative, which hosts open-source optimization tools. The platform is open to contributions, enhancements, and collaborative development efforts aimed at extending functionality, improving computational performance, and broadening the applicability of its algorithms.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>6. Conclusions</h3>
+   <p>This manual presented the Simplex method for solving linear programming problems. Through a theoretical introduction, a detailed step-by-step numerical example, and a practical code implementation, it demonstrated how the algorithm can be directly applied to obtain optimal solutions.</p>
+   <p>The reader was guided to:
+      <ul>
+         <li>Understand the key steps and numerical process of the method.</li>
+         <li>Follow a complete worked example through a step-by-step approach.</li>
+         <li>Apply the algorithm using a ready-to-use and well-structured Python implementation.</li>
+      </ul>
+   </p>
+   <p>The accompanying module, <code style='display: inline;'>simplex.py</code>, provides a comprehensive and reliable computational tool, suitable for practical use, analysis and experimentation, without dependence on specialized libraries or complex configuration. It is supported by illustrative examples and output logs to ensure transparency and reproducibility.</p>
+   <p>The Simplex method remains a foundational technique in operations research, widely used across industry, logistics, decision support, and economic analysis. This material aims to support both conceptual understanding and practical application, serving professionals, researchers, and students alike. It provides a stable, flexible, and extensible foundation for linear optimization tasks, with future extensions expected to further enhance its capabilities and broaden its field of application.</p>
+</section>
