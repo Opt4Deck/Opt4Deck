@@ -1,4 +1,21 @@
 <div align='justify'>
+   <h3>📌Planned Release Schedule</h3>
+   <p>The material included in Opt4Deck will be uploaded to GitHub progressively, with each optimization method and its accompanying documentation becoming available as soon as it is finalized. Until the full structure of the platform is complete, the schedule below provides an overview of the planned release sequence for the individual files.</p>
+   <table class='simplex-table'>
+      <thead>
+         <tr><th style='border-bottom: 2px solid;'>Module</th> <th style='border-bottom: 2px solid;'>Description</th> <th style='border-bottom: 2px solid;'>Estimated Release Date</th> <th style='border-bottom: 2px solid;'>Status</th></tr>
+      </thead>
+      <tbody>
+         <tr><th style='text-align: center;'><strong>SIMPLEX</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>November 30, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>BFGS</strong>               </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 07, 2025</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>
+         <tr><th style='text-align: center;'><strong>GENETIC</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 14, 2025</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>
+         <tr><th style='text-align: center;'><strong>ADJOINT</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 21, 2025</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>
+         <tr><th style='text-align: center;'><strong>TRICKS & TECHNIQUES</strong></th> <th style='text-align: center;'>supplementary techniques & optimization tips </th> <th style='text-align: center;'>January  04, 2026</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>
+      </tbody>
+   </table>
+
+
+   
    <h1>📘Overview</h1>
    <p><strong>Opt4Deck</strong> is an open and freely accessible optimization platform designed for students, researchers, and engineers who require reliable and flexible numerical tools for solving real-world problems. It provides clean, lightweight, and fully documented implementations of four distinct optimization algorithms, covering linear, nonlinear, stochastic, and dynamic formulations. Each method is distributed as an independent Python module and is accompanied by a detailed manual and representative application examples.</p>
    <p>The primary goal of Opt4Deck is to offer a practical, dependency-free toolkit that can be used immediately in educational, research, or engineering workflows. The project is built on principles of simplicity, transparency, and seamless integration, enabling users to apply each method without needing specialized theoretical background. By emphasizing proper problem formulation and method configuration, the platform bridges the gap between fundamental optimization theory and effective computational implementation.</p>
