@@ -1,0 +1,309 @@
+<!-- signature -->
+<style>
+:root {--main-text-color: black;}
+body {color: var(--main-text-color); font-family: sans-serif; text-align: justify;}
+h1,h2,h3,h4,h5,h6 {color: var(--main0text-color);}
+p,li,span {color: var(--main-text-color);}
+</style>
+<div style="font-family:Arial, Helvetica, sans-serif; margin:0; padding:0;">
+  <div style="font-size:14px; font-weight:600; margin-bottom:4px;">
+    Giannis Serafeim &#8226; Mechanical Engineer, PhD.
+  </div>
+  <!-- Προαιρετικά: μικρότερη γραμμή με θέση/εταιρεία -->
+  <div style="font-size:12px;">Opt4Deck — Founder</div>
+</div>
+
+<head>
+  <meta charset="utf-8">
+  <title>GENETIC</title>
+  <!-- MathJax CDN (v3) -->
+  <script>
+    window.MathJax = {tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+<h1 style="text-align: center;">GENETIC ALGORITHM</h1>
+
+<br>
+<section>
+   <h3>1. Introduction</h3>
+      <p>Genetic Algorithms (GAs) form a family of evolutionary optimization methods inspired by the biological mechanisms of natural selection and genetic adaptation. In these methods, a population of candidate solutions evolves over successive generations, where operators such as crossover and mutation generate new candidate solutions with potentially enhanced performance. Each candidate is assessed through an objective (fitness) function, and selection mechanisms favor individuals with higher fitness for reproduction, thus granting higher-quality solutions a greater likelihood of selection.</p>
+      <p>This evolutionary framework renders Genetic Algorithms well-suited for addressing nonlinear, discontinuous, multidimensional, and multimodal optimization problems, especially in contexts where conventional deterministic algorithms may stagnate or become trapped in suboptimal local optima. Owing to their stochastic nature and their capacity for broad exploration of the search space, GAs have been effectively applied across diverse domains, including mechanical engineering, robotics, artificial intelligence, economics, and bioinformatics — offering a robust and adaptable mechanism for tackling complex optimization tasks.</p>
+      <p>The purpose of this manual is to present, in a clear and structured manner, both the theoretical underpinnings of Genetic Algorithms and the operational features of the computational module developed for the Opt4Deck platform. Through a combination of theoretical exposition and representative numerical examples, the manual aims to provide a coherent and comprehensive understanding of the methodology as well as practical guidance for its application to real-world nonlinear optimization problems.</p>
+</section>
+
+<br>
+<section>
+   <h3>2. Theory of Genetic Algorithms</h3>
+   <p>This chapter presents the theoretical foundations of Genetic Algorithms by outlining their fundamental operational principles and the biological mechanisms that motivate their design. It introduces how candidate solutions are represented as chromosomes, the mechanisms of selection, crossover, and mutation that govern population evolution, and the role of the fitness function in steering the search process. Through this structured overview, the chapter establishes the conceptual framework required to understand both the behavior of GAs and their practical implementation in computational optimization tasks.</p>
+   <section>
+      <h4>2.1. Concept of Genetic Optimization</h4>
+      <figure style='float: right; margin: 0 0 1em 1em; width: 500px;'>
+         <img src='graphic.png' alt='graphic' style='width: 100%; display: block;'>
+         <figcaption style='font-size: 0.8em; text-align: center; font-style: italic;'>Critical points of a mathematical function.</figcaption>
+      </figure>
+      <p>Genetic optimization refers to a family of stochastic search techniques inspired by the principles of natural evolution observed in biological systems. In contrast to classical deterministic optimization methods that require structural properties such as differentiability, convexity, or explicit gradient information, Genetic Algorithms (GAs) operate on a population of candidate solutions, enabling the simultaneous exploration of multiple regions within the search space. The process typically begins with the construction of an initial population whose individuals are generated randomly within predefined variable bounds. Each individual represents a potential solution and is encoded as a chromosome — a structured sequence that reflects the values of the decision variables subject to optimization. The performance of every individual is subsequently assessed through an objective (fitness) function, which quantifies its quality with respect to the optimization objective.</p>
+      <p>Individuals exhibiting superior fitness are granted higher probability of selection for reproduction, thereby driving the evolutionary advancement of the population. Through the application of genetic operators — primarily crossover and mutation — selected individuals exchange and modify segments of their encoded representation, resulting in a new generation of candidate solutions with potentially enhanced characteristics. Iteration of this evolutionary cycle across successive generations gradually steers the population toward regions of the search space associated with improved objective function values.</p>
+      <p>A key advantage of genetic optimization is its independence from derivative information and smoothness assumptions. As a result, GAs are applicable to non-differentiable, discontinuous, noisy, or inherently stochastic problems, as well as to optimization landscapes characterized by multiple local extrema. This flexibility positions GAs as a versatile optimization framework capable of yielding robust, near-optimal solutions even when the analytical form of the objective function is partially known, highly complex, or available only through simulation or empirical evaluation.</p>
+   </section>
+   <section>
+      <h4>2.2. Variables as Chromosomes</h4>
+      <p>In Genetic Algorithms, each candidate solution is represented by a chromosome, which encodes the values of the problem’s design variables. The encoding adopted in this implementation is binary: each variable is mapped to a bit string consisting of the symbols "\(0\)" and "\(1\)", which constitute the genes of the chromosome. Through this formulation, the optimization is performed within a discrete binary search space, enabling the genetic operators of crossover and mutation to be applied uniformly and efficiently across all variables.</p>
+      <p>For each design variable \(x_i\), defined over a prescribed interval \([x_i^{min},x_i^{max}]\), a predefined number of binary digits \(n_i\) is allocated to specify the desired representation resolution. The mapping between the binary string \(b_i\) and the corresponding real-valued variable \(x_i\) is given by:</p>
+      <p style='text-align: center;'>\(x_i = x_i^{min}+ \frac{int(b_i,2)}{2^{n_i}-1} (x_i^{max}-x_i^{min})\)</p>
+      <p>where, \(int(b_i,2)\) denotes the integer value of the binary string \(b_i\) interpreted in base-2.</p>
+      <p>This transformation provides a uniform discretization of the admissible interval for each variable. In rare cases where numerical rounding or bit-resolution effects lead to a slight exceedance of the specified upper bound, the computed value is clipped to \(x_i^{max}\), ensuring that all decoded values remain within admissible bounds.</p>
+      <p>The binary representation offers several important advantages:
+         <ul>
+            <li>It decouples the optimization process from the intrinsic nature of the variables, enabling treatment of both continuous and discrete parameters in a unified manner.</li>
+            <li>It allows the genetic operators to be applied consistently across a broad range of optimization problems.</li>
+            <li>It facilitates systematic exploration of the search space with improved numerical robustness and resilience to irregularities in the objective function.</li>
+         </ul>
+      </p>
+   </section>
+   <section>
+      <h4>2.3. Genetic Operators</h4>
+      <p>Genetic operators constitute the primary mechanisms that drive the evolutionary process across generations in a Genetic Algorithm. Their application enables both the recombination of advantageous features and the introduction of controlled variability, guiding the search toward high-quality regions of the solution space. The two principal operators are crossover and mutation.
+         <ul>
+            <li><u>Crossover:</u> Crossover mimics biological reproduction and genetic recombination. Two parent chromosomes are combined to produce offspring that inherit genetic material from both parents, potentially yielding superior solutions through the integration of beneficial genetic traits. The typical crossover procedure involves:
+               <ol type='i'>
+                  <li>Selection of two parent individuals, often with probabilities proportional to their fitness values.</li>
+                  <li>Determination of one or more crossover points along their binary chromosomes.</li>
+                  <li>Swapping chromosome segments at the selected points, generating new offspring that incorporate genetic information from both parents.</li>
+               </ol>
+               This operator enhances the combinatorial exploration of the search space and helps preserve genetic diversity within the population. Common crossover schemes include single-point, multi-point, and uniform crossover, each offering different trade-offs between exploration and exploitation.
+            </li><br>
+            <li><u>Mutation:</u> Mutation introduces controlled randomness into the genetic representation, serving as a key mechanism for generating novel genetic variation. Its role is to prevent the population from converging prematurely to suboptimal local extrema and to support exploration of previously unvisited regions of the search space. Mutation typically consists of:
+               <ol type='i'>
+                  <li>Random selection of specific genes within the chromosome.</li>
+                  <li>Alteration or inversion of the selected bits with a small probability, known as the mutation probability.</li>
+               </ol>
+               Although applied with low frequency, mutation is essential for sustaining population diversity and avoiding evolutionary stagnation. Selecting an appropriate mutation probability is critical: excessively small values may lead to loss of diversity, whereas overly large values may diminish the algorithm’s structured search behavior.
+            </li>
+         </ul>
+      </p>
+      <p>The coordinated action of crossover and mutation establishes a balance between exploitation (refinement of solutions with high fitness) and exploration (investigation of new regions of the search space). Crossover propagates and recombines desirable traits, while mutation injects variability that ensures adaptability. Together, these operators constitute the core drivers of the evolutionary dynamics of GAs.</p>
+   </section>
+   <section>
+      <h4>2.4. Evaluation and Selection</h4>
+      <p>Evaluation and selection are two fundamental mechanisms shaping the evolutionary process of a Genetic Algorithm. Evaluation quantifies the performance of each candidate solution through a fitness function, while selection determines which individuals will contribute to the formation of the next generation. Together, these processes establish the feedback loop that drives adaptive improvement within the population.</p>
+      <p>Every individual in the population corresponds to a potential solution of the optimization problem. Its performance is assessed by a fitness function that measures how effectively it satisfies the optimization objective. A well-constructed fitness function is essential for ensuring convergence toward relevant and robust solutions.</p>
+      <p>The evaluation phase typically consists of the following steps:
+         <ul>
+            <li>Computation of the fitness value for each individual in the population.</li>
+            <li>Normalization of these values, when necessary, to ensure numerical comparability and prevent dominance by extremely high or low values.</li>
+            <li>Assignment of selection probabilities proportional to the relative fitness of each individual.</li>
+         </ul>
+      </p>
+      <p>One of the most widely adopted probabilistic selection mechanisms is roulette-wheel selection. In this method, the probability of selecting a particular individual is proportional to its fitness, giving higher-fitness individuals an increased likelihood of reproduction in the next generation, while still preserving diversity by permitting participation of lower-fitness individuals.</p>
+      <p>The roulette-wheel procedure operates as follows:
+         <ul>
+            <li>Compute the total fitness of the population.</li>
+            <li>Determine each individual’s selection probability as the ratio of its fitness to the total fitness: \(p_i = f_i/\sum f_i\).</li>
+            <li>Construct the cumulative probability distribution over the interval \([0,1]\).</li>
+            <li>Generate a random number \(r \in [0,1]\).</li>
+            <li>Select the individual whose cumulative probability range contains \(r\).</li>
+            <li>Repeat the process until the required number of individuals has been selected to form the mating pool or the subsequent population.</li>
+         </ul>
+      </p>
+      <p>The method is conceptually simple and computationally lightweight. Nevertheless, roulette-wheel selection can exhibit sensitivity to large disparities in fitness values. When one or a few individuals dominate the population, the algorithm may prematurely converge to suboptimal regions of the fitness landscape. To address such issues, scaling and normalization strategies may be employed, or alternative selection mechanisms may be adopted, such as rank selection or tournament selection.</p>
+      <p>Regardless of the selection method employed, the selection process must achieve an appropriate balance between exploitation (favoring high-quality solutions) and exploration (preserving diversity and enabling discovery of new regions of the search space). Achieving this balance is essential for the robustness, stability, and overall performance of the evolutionary optimization process.</p>
+   </section>
+   <section>
+      <h4>2.5. Algorithm Control and Stability</h4>
+      <p>The performance, numerical robustness, and overall reliability of a Genetic Algorithm depend critically on the configuration of its control parameters and on the stability of the evolutionary process. These elements govern the extent to which the search space is systematically explored, the efficiency with which the population converges toward high-quality solutions, and how successfully premature stagnation is avoided.</p>
+      <p>The primary algorithmic control parameters include:
+         <ul>
+            <li><u>Number of Generations:</u> Specifies the number of evolutionary cycles executed by the algorithm. Increasing the number of generations typically improves convergence quality by allowing more extensive refinement of candidate solutions, albeit at the cost of greater computational effort.</li>
+            <li><u>Crossover and Mutation Rates:</u> Determine the rate and intensity at which new genetic material is introduced into the population. Crossover facilitates exploitation by recombining advantageous structures contained in existing solutions, whereas mutation supports exploration by injecting controlled stochastic perturbations and preventing premature genetic homogenization.</li>
+            <li><u>Termination Criteria:</u> Determine when the optimization process concludes. Common stopping rules involve reaching a maximum number of generations, detecting negligible improvement in fitness values over successive iterations, or satisfying a predefined performance threshold.</li>
+         </ul>
+      </p>
+      <p>Algorithmic stability denotes the ability of a Genetic Algorithm to produce consistent and repeatable outcomes under varying initial conditions. A stable evolutionary process sustains an appropriate balance between exploration (examining new or insufficiently explored regions of the search space) and exploitation (intensively exploiting promising regions of the search space). Auxiliary mechanisms — such as fitness scaling, value normalization, or adaptive control of genetic operators — can significantly enhance this balance, mitigating the risk of premature convergence. Effective tuning of the control parameters, combined with a stable and well-regulated evolutionary dynamic, ensures that the algorithm operates in a computationally efficient and statistically reliable manner across different problem instances, delivering robust and dependable optimization results.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>3. Step-by-step Example</h3>
+   <style>
+      table.simplex-table { border-collapse: collapse; width: 100%; text-align: center; margin: 1rem 0; table-layout: fixed;}
+      table.simplex-table th, table.simplex-table td { border: 1px solid #999; padding: 6px; }
+   </style>
+   <p>In this section, a concise numerical example is presented to illustrate, in a clear and structured manner, the internal operational mechanisms of a single evolutionary cycle of the Genetic Algorithm. The example separates and analyzes one representative iteration — starting from an initial population and progressing through evaluation, selection, crossover, and mutation. By examining this individual iteration in detail, the reader can develop a concrete understanding of how genetic information is processed, how new candidate solutions are generated, and how the stochastic and evolutionary dynamics of the algorithm operate at the level of a single generation. This illustrative approach allows the fundamental processes of the algorithm to be explained clearly and rigorously, without the additional complexity inherent in a full multi-generation run.</p>
+   <section>
+      <h4>3.1. Problem Formulation</h4>
+      <p>In this example, we consider the maximization of a two-variable nonlinear function. The objective function is:</p>
+      <p style='text-align: center;'>\(max: f(x,y) = e^{-x^2-y^2}\)</p>
+      <p>This function defines a smooth, radially symmetric unimodal function with a unique global maximum at \((x^∗,y^∗)=(0,0)\). Its smooth structure and well-defined curvature make it a suitable benchmark case for demonstrating the operation of the Genetic Algorithm. Although the underlying problem is analytically tractable, it provides a structured framework for demonstrating how the algorithm initializes the population, evaluates candidate solutions, and generates new individuals through selection, crossover, and mutation.</p>
+      <p>The subsections that follow present a detailed walkthrough of a single evolutionary cycle of the algorithm, beginning with the construction of the initial population and continuing through the fitness evaluation and application of genetic operators. This focused analysis clarifies the internal mechanisms of one representative generation, providing insight into how the algorithm manipulates genetic information and incrementally guides the search toward regions of higher fitness.</p>
+   </section>
+   <section>
+      <h4>3.2. Step-1: Initialization and Binary Encoding</h4>
+      <p>The procedure begins with the stochastic generation of two initial candidate solutions:</p>
+      <p style='text-align: center;'>\(A_1 = (x_1,y_1) = (0.2,-1.4)\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(A_2 = (x_2,y_2) = (-0.5,-1.4)\)</p>
+      <p>Each variable is subsequently encoded into a binary chromosome according to the prescribed representation resolution. For the range \((−2,2)\) and a precision of \(0.1\), six bits are sufficient to represent each variable. A representative binary encoding is shown below:</p>
+      <p style='text-align: center;'>\(x_1 = 0.2 \Rightarrow 100010\)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(y_1 = -1.4 \Rightarrow 001010\)</p>
+      <p style='text-align: center;'>\(x_2 = -0.5 \Rightarrow 011000\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(y_2 = -1.4 \Rightarrow 001010\)</p>
+      <p>Accordingly, the two initial chromosomes are expressed as:</p>
+      <p style='text-align: center;'>\(A_1 = [\overbrace{100010}^{x_1} \underbrace{001010}_{y_1}]\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(A_2 = [\overbrace{011000}^{x_2} \underbrace{001010}_{y_2}]\)</p>
+      <p>The fitness of each individual is then computed using the objective function:</p>
+      <p style='text-align: center;'>\(f(A_1) = e^{-0.2^2-(-1.4)^2} = 0.135\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(f(A_2) = e^{-(-0.5)^2-(-1.4)^2} = 0.110\)</p>
+      <p>These fitness values quantify the relative performance of the two initial solutions and will be used to determine their selection probabilities in the subsequent step of the algorithm.</p>
+   </section>
+   <section>
+      <h4>3.3. Step-2: Crossover and Mutation</h4>
+      <p>Two parents (\(A_1\) and \(A_2\)) are selected for genetic recombination based on their fitness values. A stochastic crossover point is then selected; in this illustrative example, the crossover is performed after the \(5^{th}\) bit of the complete chromosome. The crossover position is not predetermined but is governed entirely by random sampling. The resulting offspring generated through recombination are:</p>
+      <p style='text-align: center;'>\(A_3 = [10001|0001010]\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \(A_4 = [01100|0001010]\)</p>
+      <p>Next, the mutation operator is applied to the offspring with a small probability \(P_{mut}=2.5\%\). In this example, no mutation occurs in \(A_3\), whereas a single bit in \(A_4\), is altered (flipped), yielding the following modified chromosome:</p>
+      <p style='text-align: center;'>\(A_4^{'} = [01100|0001\underline{1}10]\)</p>
+      <p>Prior to admitting any newly generated chromosome into the population, each offspring is compared against all chromosomes that exist within the current and archived populations. If an offspring is identical to any previously encountered chromosome, it is discarded to preserve genetic diversity and prevent premature convergence. In this example, \(A_3\) is identical to \(A_1\), and is therefore discarded. Only \(A_4^{'}\) is admitted to the evaluation stage.</p>
+   </section>
+   <section>
+      <h4>3.4. Step-3: Evaluation and New-population</h4>
+      <p>The surviving offspring \(A_4^{'} = (-0.5,-1.1)\) is decoded into its corresponding decimal values and subsequently evaluated, resulting in \(f(A_4^{'}) = 0.232\). The next-generation population therefore comprises three individuals: \({A_1,A_2,A_4^{'}}\). For each individual, the selection probability is computed proportionally to its fitness value, according to \(p_i = f_i/\sum f_i\). This probabilistic mechanism ensures that individuals with higher fitness are more likely to be chosen for reproduction, while those with lower fitness retain a non-zero selection probability, thereby preserving genetic diversity within the evolving population.</p>
+      <p>The roulette-wheel selection mechanism then identifies the parents for the upcoming generation, thus completing the first evolutionary cycle and preparing the algorithm for subsequent iterations toward the optimal solution.</p>
+   </section>
+   <section>
+      <h4>3.5. Discussion</h4>
+      <p>Based on this representative example, several key observations can be drawn:
+         <ul>
+            <li>The Genetic Algorithm systematically guides the population toward the global optimum \((0.0,0.0)\) through iterative refinement of candidate solutions.</li>
+            <li>The combination of stochastic crossover and controlled mutation provides an effective balance between exploration of the global search domain and exploitation of high-fitness regions.</li>
+            <li>The rejection of duplicate chromosomes preserves population diversity and reduces the likelihood of premature convergence to suboptimal regions.</li>
+            <li>Even in cases involving smooth nonlinear functions or problems without explicit derivative information, the method exhibits stable behavior and reliable convergence characteristics.</li>
+         </ul>
+      </p>
+      <p>This structured, step-by-step demonstration illustrates the fundamental operational principles of the GA — from random initialization through evaluation, selection, crossover, and mutation — thereby illustrating how successive generations naturally progress toward improved solutions.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>4. Overview and Usage</h3>
+   <p>This section provides an overview of the structure and practical usage of the Genetic Algorithm solver. The file <code style='display: inline;'>genetic.py</code> contains a fully implemented and operational module for addressing nonlinear optimization problems through GA methodology. Its usage is streamlined and primarily involves providing the required input parameters and interpreting the resulting outputs. Once the input parameters are properly specified and the corresponding function is invoked, the complete optimization workflow is executed automatically. All major algorithm stages — initialization, evaluation, selection, crossover, mutation, and population update — are documented in a dedicated log file, ensuring full transparency, reproducibility, and traceability throughout the computational procedure.</p>
+   <section>
+      <h4>4.1. Inputs <i style='font-weight: normal;'>- What the user must provide</i></h4>
+      <p>To run the Genetic Algorithm solver, the user must provide a set of mandatory and optional input parameters. These inputs define the optimization problem, the numerical resolution of the variables, and the operational parameters of the algorithm.
+         <ul>
+            <li><u>Objective function:</u> a user-defined Python function, e.g. <code style='display: inline;'>fun(x,arg)</code>, clearly separating the design variables from any auxiliary parameters. <i>(mandatory)</i></li>
+            <li><u>Variable bounds:</u> for each decision variable, the admissible interval \([x_i^{\min},x_i^{\max}]\) must be provided. <i>(mandatory)</i></li>
+            <li><u>Decimal precision:</u> the numerical resolution used for encoding all variables. This value determines the number of binary digits used in the chromosome representation. <i>(mandatory)</i></li>
+            <li><u>Mutation probability:</u> the probability with which each gene may mutate during the evolutionary process. <i>(optional)</i></li>
+            <li><u>Maximum iterations:</u> the total number of generations the algorithm will perform. <i>(optional)</i></li>
+            <li><u>Maximum population size:</u> the upper limit on the number of individuals that may be maintained in each generation. <i>(optional)</i></li>
+         </ul>
+      </p>
+      <p>An example definition of an objective function (as used in <code style='display: inline;'>genetic.py</code>) is shown below:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+def fun(x,arg):
+    return arg[0]-x[0]**2.0-x[1]**2.0
+            </code>
+         </pre>
+      </p>
+      <p>In this example, the function \(f(x,y) = 10-x^2-y^2\) is expressed in Python form and is ready to be passed to the solver.</p>
+   </section>
+   <section>
+      <h4>4.2. Module Call</h4>
+      <p>The optimization process is executed via a single function call:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+import genetic
+res = genetic.main(Fun=fun,Argume=[10.0,],Bound=[(-2.0,2.0),(-2.0,2.0)],Decimal=2,P_mut=0.025,Max_iter=500,Max_pop=50)
+            </code>
+         </pre>
+      </p>
+      <p>The function <code style='display: inline;'>genetic.main()</code> applies the Genetic Algorithm to the problem specified through the user-defined inputs and returns the computed optimal solution, along with the corresponding vector of design variables. All internal operations — including initialization, evaluation, selection, crossover, mutation, and population updates — are handled automatically by the solver, without requiring further user intervention.</p>
+   </section>
+   <section>
+      <h4>4.3. Outputs <i style='font-weight: normal;'>- what is returned</i></h4>
+      <p>The returned object <code style='display: inline;'>res</code> returns a two-component result:
+         <ul>
+            <li>the optimal value of the objective function (e.g., <code style='display: inline;'>10.0</code>), and</li>
+            <li>the optimal design-variable vector expressed as a Python list (e.g., <code style='display: inline;'>[0.0,0.0]</code>).</li>
+         </ul>
+      </p>
+      <p>A representative output is shown below:
+         <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
+            <code>
+>>print(res)
+            </code>
+            <code>
+10.0, [0.0,0.0]
+            </code>
+         </pre>
+      </p>
+      <p>This result corresponds to the following interpretation: \(x=0.0\), \(y=0.0\) and \(f(x,y)=10.0\). The first element corresponds to the maximum value of the objective function, while the second element contains the set of design variables at which this optimum is attained.</p>
+   </section>
+   <section>
+      <h4>4.4. Notes and Execution</h4>
+      <p>Additional remarks:
+         <ul>
+            <li>Understanding the internal mechanics of the Genetic Algorithm is not required for standard usage.</li>
+            <li>Correct preparation of the input parameters and proper interpretation of the solver’s output are sufficient for effective application.</li>
+            <li>The files <code style='display: inline;'>example-1.py</code>, <code style='display: inline;'>example-2.py</code> and <code style='display: inline;'>example-3.py</code> provide three complete usage examples and can be used as templates for new problems.</li>
+            <li>The current implementation supports unconstrained maximization problems.</li>
+         </ul>
+      </p>
+      <p>An illustrative workflow diagram is shown below, presenting the step-by-step execution of a representative example using the <code style='display: inline;'>genetic.main()</code> function.
+         <figure style='margin: 0 auto; '>
+            <img src='executable.png' alt='executable' style='display:block; margin:0 auto; width:1000px;'>
+            <figcaption style='font-size: 0.8em; text-align: center; font-style: italic;'>Illustration of the execution flow of the GA method, as implemented in Opt4Deck.</figcaption>
+         </figure>
+      </p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>5. Remarks and Considerations</h3>
+   <p>A complete and operational implementation of the Genetic Algorithm for nonlinear optimization problems formulated as maximization tasks is provided. The algorithm has been developed with emphasis on usability, structural clarity, and computational efficiency, enabling the solution of a broad range of optimization problems. Its robust design and modular architecture make it suitable for practical applications while providing a flexible foundation for future refinement, extension, and research-oriented development.</p>
+   <section>
+      <h4>5.1. Capabilities and Assumptions</h4>
+      <p>The current implementation of the solver relies on the following capabilities and underlying assumptions:
+         <ul>
+            <li>It supports unconstrained maximization problems through a dedicated Genetic Algorithm framework.</li>
+            <li>It accepts user-defined variable bounds, ensuring that all decision variables remain within their admissible limits.</li>
+            <li>It requires all inputs to conform to the input formatting and structural conventions outlined in this manual.</li>
+            <li>It returns both the optimal objective value and the corresponding optimal vector of decision variables.</li>
+         </ul>
+      </p>
+      <p>These features render the solver suitable for a wide range of engineering and mathematical optimization applications, including cases where analytical derivatives are unavailable, the objective function is discontinuous, or the problem exhibits complex nonlinear behavior.</p>
+   </section>
+   <section>
+      <h4>5.2. Possible Extensions</h4>
+      <p>Potential future enhancements and methodological extensions include:
+         <ul>
+            <li>Incorporation of minimization-oriented formulations alongside maximization problems.</li>
+            <li>Support for alternative (non-binary) encoding schemes and integration of AI-assisted objective function evaluation.</li>
+            <li>Automated handling of equality and inequality constraints, thereby extending the framework to constrained optimization problems.</li>
+            <li>Enhanced input-validation mechanisms and more informative error-handling protocols to improve robustness and user experience.</li>
+            <li>Development of a graphical user interface (GUI) to improve accessibility, user interaction, and visualization of the optimization workflow.</li>
+         </ul>
+      </p>
+      <p>These extensions would further broaden the solver’s capabilities and enhance its value as a versatile tool for both research and industrial applications.</p>
+   </section>
+   <section>
+      <h4>5.3. Collaboration and Development</h4>
+      <p>This project is developed under the Opt4Deck initiative, which hosts open-source optimization tools. The platform is open to contributions, enhancements, and collaborative development efforts aimed at extending functionality, improving computational performance, and broadening the applicability of its algorithms.</p>
+   </section>
+</section>
+
+<br>
+<section>
+   <h3>6. Conclusions</h3>
+   <p>This manual presented the Genetic Algorithm method for addressing nonlinear programming problems. Through a combination of theoretical overview, a detailed step-by-step numerical example, and a practical Python implementation, it demonstrated how the algorithm can be applied in a structured, transparent, and reproducible manner to obtain optimal solutions.</p>
+   <p>The reader was guided to:
+      <ul>
+         <li>Understand the fundamental concepts and numerical mechanisms underlying the GA.</li>
+         <li>Follow a complete illustrative example with clear, sequential analysis of each evolutionary step.</li>
+         <li>Apply the method directly through a ready-to-use and well-organized Python implementation.</li>
+      </ul>
+   </p>
+   <p>The accompanying module, <code style='display: inline;'>genetic.py</code>, offers a robust and reliable computational framework suitable for practical applications, experimentation, and data evaluation, without requiring specialized external libraries or complex configuration. Supplementary examples and log files support transparency, traceability, and reproducibility of results.</p>
+   <p>GAs remain a core methodology in engineering optimization, scientific computing, and design exploration. This material aims to facilitate their adoption by professionals, researchers, and students, providing a stable, flexible, and extensible foundation for nonlinear optimization tasks. Future extensions and enhancements will further enrich its capabilities and broaden its applicability across diverse problem domains.</p>
+</section>
