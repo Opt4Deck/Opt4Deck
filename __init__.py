@@ -4,4 +4,3 @@ from GENETIC.genetic import main as genetic
 from ADJOINT.adjoint import main as adjoint
 
 __all__ = ["simplex", "bfgs", "genetic", "adjoint"]
-
