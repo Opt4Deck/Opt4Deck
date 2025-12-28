@@ -15,12 +15,10 @@
       </tbody>
    </table>
    <h1>⬇️ Installation</h1>
-   <p>Install Opt4Deck directly from the Python Package Index (PyPI):
-   </p>
-   <p>xxxxx</p>
+   <p>Install Opt4Deck directly from the Python Package Index (PyPI):</p>
    <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
       <code>
-         pip install Opt4Deck
+pip install Opt4Deck
    </code>
    </pre>
    <br>
