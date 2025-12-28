@@ -18,7 +18,6 @@
    <p>Install Opt4Deck directly from the Python Package Index (PyPI):
    ```bash
    pip install Opt4Deck
-   ```
    </p>
    <p>xxxxx</p>
 <code>
