@@ -14,16 +14,15 @@
          <tr><th style='text-align: center;'><strong>TRICKS & TECHNIQUES</strong></th> <th style='text-align: center;'>supplementary techniques & optimization tips </th> <th style='text-align: center;'>January  04, 2026</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>
       </tbody>
    </table>
-   <h1>⬇️ Download & Installation</h1>
+   <h1>⬇️ Installation</h1>
    <p>Install Opt4Deck directly from the Python Package Index (PyPI):
    ```bash
    pip install Opt4Deck
    ```
    </p>
+   <p>xxxxx</p>
 <code>
-```bash
 pip install Opt4Deck
-```
 </code>
    <h1>📘Overview</h1>
    <p><strong>Opt4Deck</strong> is an open and freely accessible optimization platform designed for students, researchers, and engineers who require reliable and flexible numerical tools for solving real-world problems. It provides clean, lightweight, and fully documented implementations of four distinct optimization algorithms, covering linear, nonlinear, stochastic, and dynamic formulations. Each method is distributed as an independent Python module and is accompanied by a detailed manual and representative application examples.</p>
