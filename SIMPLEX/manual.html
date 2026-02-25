@@ -29,9 +29,9 @@ p,li,span {color: var(--main-text-color);}
 <br>
 <section>
    <h3>1. Introduction</h3>
-      <p>Linear Programming (LP) constitutes a fundamental branch of operations research and mathematical optimization. The primary objective is to determine the optimal value of a linear objective function subject to a series of linear constraints. This methodology finds extensive applications in industrial production, resource allocation, economic modeling, supply-chain logistics, and strategic planning.</p>
-      <p>The Simplex algorithm, developed by George Dantzig (1947), remains one of the most widely adopted and computationally efficient methods for solving LP problems. It systematically navigates the vertices of the feasible region, improving the objective function value at each iteration until an optimal solution is reached. Despite its conceptual simplicity, the method demonstrates remarkable performance across various domains, including production scheduling, transportation optimization, portfolio management, and energy system design.</p>
-      <p>The purpose of this manual is twofold: first, to provide a concise and structured presentation of the theoretical foundations of the Simplex method, and second, to support its practical implementation as a computational module within the Opt4Deck platform. Through illustrative examples and detailed step-by-step demonstrations, the reader is equipped with both a solid theoretical foundation and a dependable computational tool for solving real-world linear maximization problems.</p>
+   <p>Linear Programming (LP) constitutes a fundamental branch of operations research and mathematical optimization. The primary objective is to determine the optimal value of a linear objective function subject to a series of linear constraints. This methodology finds extensive applications in industrial production, resource allocation, economic modeling, supply-chain logistics, and strategic planning.</p>
+   <p>The Simplex algorithm, developed by George Dantzig (1947), remains one of the most widely adopted and computationally efficient methods for solving LP problems. It systematically navigates the vertices of the feasible region, improving the objective function value at each iteration until an optimal solution is reached. Despite its conceptual simplicity, the method demonstrates remarkable performance across various domains, including production scheduling, transportation optimization, portfolio management, and energy system design.</p>
+   <p>The purpose of this manual is twofold: first, to provide a concise and structured presentation of the theoretical foundations of the Simplex method, and second, to support its practical implementation as a computational module within the Opt4Deck platform. Through illustrative examples and detailed step-by-step demonstrations, the reader is equipped with both a solid theoretical foundation and a dependable computational tool for solving real-world linear maximization problems.</p>
 </section>
 
 <br>
@@ -42,11 +42,11 @@ p,li,span {color: var(--main-text-color);}
       <h4>2.1. Standard Form of LPP</h4>
       <p>The standard form of a Linear Programming Problem (LPP) provides a consistent mathematical structure for expressing optimization problems in a form suitable for the Simplex method. In this formulation, the goal is to maximize a linear objective function subject to a set of linear constraints, each of which represents a limitation on available resources or system parameters. All variables are required to be non-negative to ensure meaningful and interpretable solutions. The standard form can be expressed as:
          <table style='margin: 0 auto;'>
-            <tr> <th>max:</th> <td>\(Z=c_1x_1+c_2x_2+...+c_nx_n\)</tr>
-            <tr> <th>s.t.</th> <td>\(a_{11}x_1+a_{12}x_2+...+a_{1n}x_n \le b_1\)</tr>
-            <tr> <td></td>     <td style='text-align: center;'>.............    </tr>
-            <tr> <td></td>     <td>\(a_{m1}x_1+a_{m2}x_2+...+a_{mn}x_n \le b_m\)</tr>
-            <tr> <td></td>     <td>\(x_1,x_2,...,x_n \ge 0\)                    </tr>
+            <tr> <td>max:</td>  <td>\(Z=c_1x_1+c_2x_2+...+c_nx_n\)</tr>
+            <tr> <td>s.t.,</td> <td>\(a_{11}x_1+a_{12}x_2+...+a_{1n}x_n \le b_1\)</tr>
+            <tr> <td></td>      <td style='text-align: center;'>.............    </tr>
+            <tr> <td></td>      <td>\(a_{m1}x_1+a_{m2}x_2+...+a_{mn}x_n \le b_m\)</tr>
+            <tr> <td></td>      <td>\(x_1,x_2,...,x_n \ge 0\)                    </tr>
          </table>
          where,
          <ul>
@@ -149,10 +149,10 @@ p,li,span {color: var(--main-text-color);}
       <h4>3.1. Problem Formulation</h4>
       <p>The first step in applying the Simplex method is to express the optimization problem in standard form, represented as linear expressions involving non-negative variables. In this example, we consider a maximization problem, where the objective is to determine the combination of decision variables that yields the maximum value of a given linear function, subject to a set of resource constraints.</p>
       <table style='margin: 0 auto;'>
-         <tr> <th>max:</th> <td>\(Z=7x_1+6x_2\)      </td> </tr>
-         <tr> <th>s.t.</th> <td>\(2x_1+4x_2 \le 16\) </td> </tr>
-         <tr> <td></td>     <td>\(3x_1+2x_2 \le 12\) </td> </tr>
-         <tr> <td></td>     <td>\(x_1,x_2 \ge 0\)    </td> </tr>
+         <tr> <td>max:</td>  <td>\(Z=7x_1+6x_2\)      </td> </tr>
+         <tr> <td>s.t.,</td> <td>\(2x_1+4x_2 \le 16\) </td> </tr>
+         <tr> <td></td>      <td>\(3x_1+2x_2 \le 12\) </td> </tr>
+         <tr> <td></td>      <td>\(x_1,x_2 \ge 0\)    </td> </tr>
       </table>
       <p>The problem is formulated by defining:
          <ul>

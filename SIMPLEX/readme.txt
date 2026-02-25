@@ -28,7 +28,7 @@
                  detailed log of the Simplex iterations for further inspection or debugging.
 
 5. Dependencies:
-   - datetime
+    - datetime
 
 6. Notes:
     - This version supports maximization problems only.
