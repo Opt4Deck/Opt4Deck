@@ -38,9 +38,9 @@
                  detailed log of the BFGS iterations for further inspection or debugging.
 
 5. Dependencies:
-   - math
-   - numpy
-   - datetime
+    - math
+    - numpy
+    - datetime
 
 6. Notes:
     - The algorithm may converge to a local rather than global optimum.

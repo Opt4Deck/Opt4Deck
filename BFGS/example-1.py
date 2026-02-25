@@ -2,8 +2,8 @@
 # max: f = x*e^(-x)
 # Optimization type: variable unboundaries
 #-------------------------------------------------------------------------
-import math
 import bfgs
+import math
 
 def fun(x,arg):
     return arg[0]+x[0]*math.exp(-x[0])
