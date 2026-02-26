@@ -7,7 +7,7 @@
    efficient evaluation of the sensitivity of the mismatch with respect to the design variables. By solving one forward and one adjoint
    system, the module computes the adjustment field with computational cost independent of the dimensionality of the parameter space. It
    supports variable bounds, automated management of the forward–adjoint optimization loop, and generation of the required distributions,
-   providing a robust computational tool for engineering and computational physics applications where accurate matching to a aim state
+   providing a robust computational tool for engineering and computational physics applications where accurate matching to an aim state
    is required.
 
 2. Key-features:
@@ -61,7 +61,7 @@
     - Convergence is influenced by the choice of initial values and by the enforcement of variable bounds.
     - The err variable is a key performance indicator, quantifying the mismatch with the aim-distribution.
     - All intermediate steps are automatically logged for reproducibility and diagnostic purposes.
-    - The module can be integrated into larger optimization frameworks without reliance on external numerical libraries.
+    - The module can be integrated into larger optimization frameworks without reliance on specialized external numerical libraries.
 
 7. Author:
    Giannis Serafeim, PhD

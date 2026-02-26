@@ -7,10 +7,9 @@
 #        |0 0 0 0 1|          | 0  0  0 -1  1|            |0|
 # Forward-in-time integration of the governing equation
 #-------------------------------------------------------------------------
-
+import adjoint
 import math
 import numpy as np
-import adjoint
 
 time = np.linspace(0.0,5000.0,501)
 Amat = lambda OptVal: np.array([[1.0,0.0,0.0,0.0,0.0],\

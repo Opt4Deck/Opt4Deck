@@ -4,9 +4,9 @@
 #        | 0   1/ω2|      |0   1|            |cos(ω2*t)-sin(ω2*t)|
 # Backward-in-time integration of the governing equation
 #-------------------------------------------------------------------------
+import adjoint
 import math
 import numpy as np
-import adjoint
 
 time = np.linspace(0.0,1.0*math.pi/2.0,101)
 Amat = lambda OptVal: np.array([[1.0/OptVal[0],0.0],[0.0,1.0/OptVal[1]]])

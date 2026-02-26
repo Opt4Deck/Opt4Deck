@@ -2,9 +2,9 @@
 # Governing equation: RCdv/dt+v=Vs(t), R = 5Ω and Vs(t) = 5V
 # Forward-in-time integration of the governing equation
 #-------------------------------------------------------------------------
+import adjoint
 import math
 import numpy as np
-import adjoint
 
 time = np.linspace(0.0,0.8,101)
 Amat = lambda OptVal: np.array([[5.0*(10.0**(-2.0))*OptVal[0],],])

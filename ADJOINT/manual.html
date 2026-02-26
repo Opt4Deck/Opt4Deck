@@ -24,15 +24,14 @@ p,li,span {color: var(--main-text-color);}
 </head>
 <body>
 
-
 <h1 style="text-align: center;">ADJOINT METHOD</h1>
 
 <br>
 <section>
    <h3>1. Introduction</h3>
-      <p>The Adjoint Method is a rigorous and computationally efficient framework for addressing optimization problems governed by differential equations. Such problems arise in systems whose behavior is determined by underlying physical processes — such as fluid flow, heat transfer, or mechanical vibration — expressed through governing equations. At its core, the Adjoint Method enables the computation of derivatives of an objective function with respect to design variables without the need for explicit differentiation of the governing equations. Instead, an auxiliary system (the so-called adjoint system) is introduced, allowing the evaluation of sensitivities with computational cost essentially independent of the dimensionality of the parameter space, even for problems involving a large number of design parameters.</p>
-      <p>Over the past decades, the adjoint approach has become a fundamental component of modern computational engineering. It is extensively applied in aerodynamic optimization, thermal analysis, structural mechanics, and control systems, providing a scalable mechanism for handling complex physical models. Its most significant advantage lies in the fact that the computational cost of evaluating the gradient is independent of the number of design variables, making large-scale optimization computationally tractable. </p>
-      <p>This manual presents, in a clear and structured manner, the theoretical background of the Adjoint Method along with a description of the computational module implemented within the Opt4Deck platform. Through theoretical exposition and numerical examples, it aims to provide both conceptual understanding and practical guidance for applying the method to real engineering and scientific design tasks.</p>
+   <p>The Adjoint Method is a rigorous and computationally efficient framework for addressing optimization problems governed by differential equations. Such problems arise in systems whose behavior is determined by underlying physical processes — such as fluid flow, heat transfer, or mechanical vibration — expressed through governing equations. At its core, the Adjoint Method enables the computation of derivatives of an objective function with respect to design variables without the need for explicit differentiation of the governing equations. Instead, an auxiliary system (the so-called adjoint system) is introduced, allowing the evaluation of sensitivities with computational cost essentially independent of the dimensionality of the parameter space, even for problems involving a large number of design parameters.</p>
+   <p>Over the past decades, the adjoint approach has become a fundamental component of modern computational engineering. It is extensively applied in aerodynamic optimization, thermal analysis, structural mechanics, and control systems, providing a scalable mechanism for handling complex physical models. Its most significant advantage lies in the fact that the computational cost of evaluating the gradient is independent of the number of design variables, making large-scale optimization computationally tractable. </p>
+   <p>This manual presents, in a clear and structured manner, the theoretical background of the Adjoint Method along with a description of the computational module implemented within the Opt4Deck platform. Through theoretical exposition and numerical examples, it aims to provide both conceptual understanding and practical guidance for applying the method to real engineering and scientific design tasks.</p>
 </section>
 
 <br>
@@ -46,7 +45,7 @@ p,li,span {color: var(--main-text-color);}
          <figcaption style='font-size: 0.8em; text-align: center; font-style: italic;'>Critical points of a mathematical function.</figcaption>
       </figure>
       <p>The Adjoint Method is formulated in the context of a constrained optimization problem, where the evolution of the system is governed by a set of state equations. Consider a general first-order dynamic system described by:</p>
-      <p style='text-align: center;'>\(A(u) \frac{dx}{dt} + B(u) x = F(t;u) \Rightarrow R(t;u) = A(u) \frac{dx}{dt} + B(u) x -F(t;u)\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.1)}\)</p>
+      <p style='text-align: center;'>\(A(u) \frac{dx}{dt} + B(u) x = F(t;u) \Rightarrow R(t;u) = A(u) \frac{dx}{dt} + B(u) x -F(t;u)\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 1)}\)</p>
       <p>where,
          <ul>
             <li>\(x(t)\): the vector of state variables,</li>
@@ -56,27 +55,27 @@ p,li,span {color: var(--main-text-color);}
          </ul>
       </p>
       <p>The objective function \(F_{aim}(u)\) is typically defined as an integral cost functional that quantifies the deviation between the system response and a desired aim state \(x_{aim}(t)\), and is formally expressed as:</p>
-      <p style='text-align: center;'>\(F_{aim}(u) = \frac{1}{2} \int_0^\tau \Vert x(t;u)-x_{aim}(t)\rVert^2 dt \Rightarrow \frac{\delta F_{aim}(u)}{\delta u} = \int_0^\tau x_*^T \frac{\delta x}{\delta u} dt\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.2)}\)</p>
+      <p style='text-align: center;'>\(F_{aim}(u) = \frac{1}{2} \int_0^\tau \Vert x(t;u)-x_{aim}(t)\rVert^2 \, \mathrm{d}t \Rightarrow \frac{\delta F_{aim}(u)}{\delta u} = \int_0^\tau x_*^T \frac{\delta x}{\delta u} \, \mathrm{d}t\) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 2)}\)</p>
       <p>Where, \(x_* = x(t;u)-x_{aim}(t)\). Our aim is to compute the gradient \(\nabla F_{aim}(u)\), expressing the sensitivity of the objective function with respect to the design parameters. Direct differentiation of the governing state equations with respect to each parameter is computationally prohibitive, especially for high-dimensional systems. To address this, an auxiliary adjoint system is introduced, enabling an indirect yet efficient computation of the gradient at a cost that is independent of the number of design variables.</p>
       <p>To facilitate this derivation, we introduce the augmented functional:</p>
-      <p style='text-align: center;'>\(F_{aim}^{aug}(u) = F_{aim} + \int_0^\tau\Psi^T R(t;u)\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.3)}\)</p>
+      <p style='text-align: center;'>\(F_{aim}^{aug}(u) = F_{aim} + \int_0^\tau\Psi^T R(t;u) \, \mathrm{d}t\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 3)}\)</p>
       <p>where \(\Psi(t)\) is the adjoint variable. Taking the variation of \(F_{aim}^{aug}\) with respect to \(u\) yields the expression:</p>
-      <p style='text-align: center;'>\(\begin{aligned} \frac{\delta F_{aim}^{aug}(u)}{\delta u} &= \int_0^\tau x_*^T \frac{\delta x}{\delta u} dt + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ A(u) \frac{\delta x}{\delta t} + B(u) x - F(t;u) \right] dt \\
-                                                                                                &= \int_0^\tau x_* \frac{\delta x}{\delta u} dt + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ A(u) \frac{dx}{dt} \right] dt + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ B(u) x \right] dt - \int_0^\tau \Psi^T \frac{\delta F}{\delta u} dt \end{aligned}\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.4)}\)</p>
+      <p style='text-align: center;'>\(\begin{aligned} \frac{\delta F_{aim}^{aug}(u)}{\delta u} &= \int_0^\tau x_*^T \frac{\delta x}{\delta u} \, \mathrm{d}t + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ A(u) \frac{\delta x}{\delta t} + B(u) x - F(t;u) \right] \, \mathrm{d}t \\
+                                                                                                &= \int_0^\tau x_* \frac{\delta x}{\delta u} \, \mathrm{d}t + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ A(u) \frac{dx}{dt} \right] \, \mathrm{d}t + \int_0^\tau \Psi^T \frac{\delta}{\delta u} \left[ B(u) x \right] \, \mathrm{d}t - \int_0^\tau \Psi^T \frac{\delta F}{\delta u} \, \mathrm{d}t \end{aligned}\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 4)}\)</p>
       <p>Using integration by parts and imposing the terminal conditions \(\Psi(t=\tau)=0\) and \(\frac{\delta x}{\delta u}|_{t=0}=0\), the expression reduces to: </p>
-      <p style='text-align: center;'>\(\frac{\delta F_{aim}^{aug}(u)}{\delta u} = \int_0^\tau \Psi^\tau \left[ \frac{\delta A(u)}{\delta u} \frac{dx}{dt} + \frac{\delta B(u)}{\delta u} x - \frac{\delta F}{\delta u} \right] dt\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.5)}\)</p>
+      <p style='text-align: center;'>\(\frac{\delta F_{aim}^{aug}(u)}{\delta u} = \int_0^\tau \Psi^\tau \left[ \frac{\delta A(u)}{\delta u} \frac{dx}{dt} + \frac{\delta B(u)}{\delta u} x - \frac{\delta F}{\delta u} \right] \, \mathrm{d}t\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 5)}\)</p>
       <p>under the condition that the adjoint equation is satisfied:</p>
-      <p style='text-align: center;'>\(-\frac{d \Psi^T}{dt} A(u) + \Psi^T B(u) + x_*^T = 0\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(A(u) \frac{d \Psi}{dt} - B(u) \Psi = x_*\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.6)}\)</p>
+      <p style='text-align: center;'>\(-\frac{d \Psi^T}{dt} A(u) + \Psi^T B(u) + x_*^T = 0\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(A(u) \frac{d \Psi}{dt} - B(u) \Psi = x_*\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 6)}\)</p>
       <p>Within this framework, the optimization process consists of two coupled steps: first, the forward solution, which determines the state vector \(x(t)\); and second, the adjoint solution, which quantifies the influence of each design variable on the objective function. These two systems are linked through the Lagrangian formulation of the optimization problem, forming the mathematical foundation of the Adjoint Method and providing an efficient and rigorous mechanism for gradient evaluation in complex dynamic systems.</p>
    </section>
    <section>
       <h4>2.2. Steepest Descent Method</h4>
       <p>The Steepest Descent Method is one of the most fundamental and conceptually straightforward iterative optimization schemes. It is based on the principle that the descent direction for updating the design variables corresponds to the direction of the steepest decrease of the objective function — that is, the negative gradient.</p>
       <p>Let \(u_k\) denote the vector of design variables at the \(k\)-th iteration. The update rule is expressed as:</p>
-      <p style='text-align: center;'>\(u_{k+1} = u_k - \alpha_k \nabla F_{aim}(u_k)\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.7)}\)</p>
+      <p style='text-align: center;'>\(u_{k+1} = u_k - \alpha_k \nabla F_{aim}(u_k)\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 7)}\)</p>
       <p>where \(\alpha_k\) denotes the step size, and \( \nabla F_{aim}(u_k)\) is the gradient vector computed using the adjoint formulation. The proper selection of the step size is crucial for ensuring stability and convergence. A step that is too small may lead to excessively slow convergence, whereas an excessively large step can cause oscillations or even divergence.</p>
       <p>To enhance the convergence behavior, the Barzilai–Borwein (BB) method introduces an adaptive, recursively defined update rule for computing the step size, based on the relationship between two successive iterations. The step size is defined as:</p>
-      <p style='text-align: center;'>\(\alpha_k = \frac{s_k^T s_k}{s_k^T y_k}\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\boldsymbol{(Eq.8)}\)</p>
+      <p style='text-align: center;'>\(\alpha_k = \frac{s_k^T s_k}{s_k^T y_k}\)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\(\text{(Eq. 8)}\)</p>
       <p>where:
          <ul>
             <li>\(s_k = u_{k+1}-u_k\): is the update (step) vector, and</li>
@@ -92,11 +91,11 @@ p,li,span {color: var(--main-text-color);}
       <p>The general procedure follows the sequence below:
          <ol type='i'>
             <li><u>Initialization:</u> Define the initial design vector \(u_0\), the parameter bounds, the convergence tolerance, and the maximum number of iterations.</li>
-            <li><u>Forward Analysis:</u> Solve the governing state equation \(\boldsymbol{(Eq.1)}\), to compute the time evolution of the state vector \(x(t;u_k)\). \(\rightarrow\) <i>(high-cost step)</i></li>
+            <li><u>Forward Analysis:</u> Solve the governing state equation \(\text{(Eq. 1)}\), to compute the time evolution of the state vector \(x(t;u_k)\). \(\rightarrow\) <i>(high-cost step)</i></li>
             <li><u>Objective Function Evaluation:</u> Evaluate the objective function \(F_{aim}(u_k)\) as a measure of deviation between the computed system response and the desired aim state.</li>
-            <li><u>Adjoint Analysis:</u> Solve the adjoint (conjugate) system \(\boldsymbol{(Eq.6)}\), with appropriate terminal or boundary conditions to obtain the adjoint variable \(\Psi(t)\), encoding the sensitivity of the objective function with respect to the system state. \(\rightarrow\) <i>(high-cost step)</i></li>
-            <li><u>Gradient Computation:</u> Combine the results of the forward and adjoint analyses to evaluate the gradient vector according to \(\boldsymbol{(Eq.5)}\).</li>
-            <li><u>Parameter Update:</u> Update the design parameters using the steepest descent rule \(\boldsymbol{(Eq.7)}\), applying either a line-search or the recursive Barzilai–Borwein step-size scheme for adaptive scaling.</li>
+            <li><u>Adjoint Analysis:</u> Solve the adjoint (conjugate) system \(\text{(Eq. 6)}\), with appropriate terminal or boundary conditions to obtain the adjoint variable \(\Psi(t)\), encoding the sensitivity of the objective function with respect to the system state. \(\rightarrow\) <i>(high-cost step)</i></li>
+            <li><u>Gradient Computation:</u> Combine the results of the forward and adjoint analyses to evaluate the gradient vector according to \(\text{(Eq. 5)}\).</li>
+            <li><u>Parameter Update:</u> Update the design parameters using the steepest descent rule \(\text{(Eq. 7)}\), applying either a line-search or the recursive Barzilai–Borwein step-size scheme for adaptive scaling.</li>
             <li><u>Convergence Check:</u> If the reduction in the objective function satisfies the predefined convergence tolerance, the optimization loop terminates; otherwise, steps (ii&ndash;vii) are repeated.</li>
          </ol>
       </p>
@@ -144,7 +143,7 @@ p,li,span {color: var(--main-text-color);}
    <section>
       <h4>3.3. Step-2: Gradient Calculation</h4>
       <p>The derivative of the objective function with respect to the design parameter \(u\) can now be evaluated in an indirect manner using the adjoint variable. Based on the adjoint formulation of the augmented functional, the gradient is expressed as:</p>
-      <p style='text-align: center;'>\(\frac{\delta F_{aim}^{aug}}{\delta u} = -\int_0^\tau \Psi(t) \frac{\delta F(t,u)}{\delta u} dt = -\int_0^\tau \Psi(t) e^{-t} dt\)</p>
+      <p style='text-align: center;'>\(\frac{\delta F_{aim}^{aug}}{\delta u} = -\int_0^\tau \Psi(t) \frac{\delta F(t,u)}{\delta u} \, \mathrm{d}t = -\int_0^\tau \Psi(t) e^{-t} \, \mathrm{d}t\)</p>
       <p>This expression yields the analytical sensitivity of the objective function without necessitating explicit differentiation of the governing state equation — one of the central advantages of the Adjoint Method. The adjoint variable \(\Psi(t)\) encapsulates the influence of the design parameter on the system dynamics, thereby enabling an efficient and numerically stable gradient evaluation.</p>
    </section>
    <section>
@@ -206,6 +205,7 @@ aim = [(t,np.array([[2.0*t*math.exp(-t)],])) for t in np.linspace(0.0,1.0,51)]
          <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
             <code>
 import adjoint
+import numpy as np
 res = adjoint.main(Amat=A,Bmat=B,Fmat=F,x_ini=ini,x_aim=aim,OptVal=[1.0,],Bound=[(False,0.0,5.0),],Conver=0.001,Max_iter=25)
             </code>
          </pre>
@@ -265,7 +265,7 @@ res = adjoint.main(Amat=A,Bmat=B,Fmat=F,x_ini=ini,x_aim=aim,OptVal=[1.0,],Bound=
             <li>The solver returns both the optimized adjustment distribution (design-variable field) and the corresponding design variable values upon convergence.</li>
          </ul>
       </p>
-      <p>These capabilities make the solver well-suited for applications involving parameter adjustment, model calibration, and dynamic-system optimization and related mathematical optimization tasks, particularly where computational efficiency and adjoint-based sensitivity evaluation are essential.</p>
+      <p>These capabilities make the solver well-suited for applications involving parameter adjustment, model calibration, and dynamic-system optimization and related mathematical optimization problems, particularly where computational efficiency and adjoint-based sensitivity evaluation are essential.</p>
    </section>
    <section>
       <h4>5.2. Possible Extensions</h4>

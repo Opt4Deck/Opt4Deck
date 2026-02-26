@@ -93,7 +93,7 @@ def adjoint(Amat,Bmat,Fmat,time,x_ini,x_aim,OptVal,Bound,Conver,Max_iter):
         for i in range(0,len(time)):
             f.write('%.5f'%(time[i]))
             for j in range(0,len(x_ini[1])):
-                f.write('   %.5f   %.5f'%(x_mat[i][j].flatten(),x_aim[i][j].flatten()))
+                f.write('   %.5f   %.5f' % (float(np.ravel(x_mat[i][j])[0]), float(np.ravel(x_aim[i][j])[0])))
             f.write('\n')
     return Fnew,OptVal_new
 
