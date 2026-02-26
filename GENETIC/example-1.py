@@ -2,8 +2,8 @@
 # max: f(x) = 1-(e^(-(x^2)/5))cos(x^2)
 # The function is positive and exhibits multiple local stationary points.
 #-------------------------------------------------------------------------
-import math
 import genetic
+import math
 
 def fun(x,arg):
     return arg[0]+math.exp(-(x[0]**2.0)/5.0)*math.cos(x[0]**2.0)

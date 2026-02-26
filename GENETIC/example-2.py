@@ -3,8 +3,8 @@
 # Converted to, max: f(x,y) = 100-(x+2y-7)^2-(2x+y-5)^2
 # The constant 100 ensures that the transformed function remains positive.
 #-------------------------------------------------------------------------
-import math
 import genetic
+import math
 
 def fun(x,arg):
     return arg[0]-(x[0]+2.0*x[1]-7.0)**2.0-(2.0*x[0]+x[1]-5.0)**2.0

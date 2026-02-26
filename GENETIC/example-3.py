@@ -3,8 +3,8 @@
 # The function is undefined at (0,0), and the region around it is treated as noise.
 # A small exclusion zone is introduced, assigning an arbitrary value inside it.
 #-------------------------------------------------------------------------
-import math
 import genetic
+import math
 
 def fun(x,arg):
     if x[0]**2.0+x[1]**2.0>0.10:
