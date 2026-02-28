@@ -1,10 +1,10 @@
 # optimize.py — GA optimization for Bezier thickness under stress constraint (penalty method)
 # Uses: beam.py (analysis) + genetic.py (optimizer)
 #-------------------------------------------------------------------------
+import genetic
 import math
 import numpy as np
 import beam
-import genetic
 
 # Objective: fitness function to maximize
 def fun(val,arg):

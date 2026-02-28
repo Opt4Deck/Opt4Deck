@@ -4,9 +4,7 @@
 import math
 import numpy as np
 import beam
-#import Opt4Deck
 import matplotlib.pyplot as plt
-#from matplotlib.patches import Polygon
 import matplotlib as mpl
 
 # Initialization: colormap + persistent figure handles

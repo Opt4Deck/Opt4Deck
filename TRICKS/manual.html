@@ -1,7 +1,7 @@
 <!-- signature -->
 <style>
 :root {--main-text-color: black;}
-body {color: var(--main-text-color);font-family: sans-serif;}
+body {color: var(--main-text-color);font-family: sans-serif; text-align: justify;}
 h1,h2,h3,h4,h5,h6 {color: var(--main0text-color);}
 p,li,span {color: var(--main-text-color);}
 </style>
@@ -24,15 +24,14 @@ p,li,span {color: var(--main-text-color);}
 </head>
 <body>
 
-
 <h1 style="text-align: center;">Tricks & Techniques</h1>
 
 <br>
 <section>
    <h3>1. Introduction</h3>
-      <p>This manual consolidates a set of methodologies, techniques, and practical guidelines aimed at the systematic formulation and solution of numerical optimization problems. In computational environments where convergence stability, repeatability, and result accuracy constitute critical performance criteria, proper problem formulation and appropriate preparation of the input data are as critical as the selection of the optimization algorithm. Within this context, the document outlines key principles and practices that enhance the consistency and efficiency of the overall optimization workflow.</p>
-      <p>The sections that follow provide a concise and focused overview of the main optimization algorithms: SIMPLEX, BFGS, GENETIC, and ADJOINT, along with practical guidance on key stages of implementation, including the normalization of design variables and objective functions, the incorporation of constraints, and the adjustment of problem parameters to match the numerical requirements of each method. Emphasis is placed on techniques that reduce sensitivity to scaling effects, improve convergence behavior, and ensure reliable performance in realistic applications.</p>
-      <p>This material has been designed as supporting technical documentation for the optimization modules developed within the Opt4Deck platform. Its purpose is twofold: to provide a unified theoretical foundation for understanding the fundamental characteristics of the available methods, and to offer practical guidance for their proper application. In this respect, the present manual serves as a coherent reference for applying optimization techniques to engineering and computational analysis problems.</p>
+   <p>This manual consolidates a set of methodologies, techniques, and practical guidelines aimed at the systematic formulation and solution of numerical optimization problems. In computational environments where convergence stability, repeatability, and result accuracy constitute critical performance criteria, proper problem formulation and appropriate preparation of the input data are as critical as the selection of the optimization algorithm. Within this context, the document outlines key principles and practices that enhance the consistency and efficiency of the overall optimization workflow.</p>
+   <p>The sections that follow provide a concise and focused overview of the main optimization algorithms: SIMPLEX, BFGS, GENETIC, and ADJOINT, along with practical guidance on key stages of implementation, including the normalization of design variables and objective functions, the incorporation of constraints, and the adjustment of problem parameters to match the numerical requirements of each method. Emphasis is placed on techniques that reduce sensitivity to scaling effects, improve convergence behavior, and ensure reliable performance in realistic applications.</p>
+   <p>This material has been designed as supporting technical documentation for the optimization modules developed within the Opt4Deck platform. Its purpose is twofold: to provide a unified theoretical foundation for understanding the fundamental characteristics of the available methods, and to offer practical guidance for their proper application. In this respect, the present manual serves as a coherent reference for applying optimization techniques to engineering and computational analysis problems.</p>
 </section>
 
 <br>
@@ -118,9 +117,9 @@ p,li,span {color: var(--main-text-color);}
       <p>The Lagrange multiplier method applies to maximization problems with equality constraints. The multipliers (\(\lambda_i\)) act as coupling parameters between the objective function and the constraints, enabling the identification of points where the optimization objective is compatible with the imposed equalities. In practice, this formulation is primarily used as a compact and structured representation of the necessary optimality conditions for equality-constrained problems.</p>
       <p>The Karush–Kuhn–Tucker conditions provide the natural generalization of this framework to problems involving both equality and inequality constraints. A general constrained maximization problem may be expressed as:</p>
          <table style='margin: 0 auto;'>
-            <tr> <th>max:</th> <td>\(f(x)\)</tr>
-            <tr> <th>s.t.</th> <td>\(g_i(x)=0,\)     <td>\(i=1,...,m\)</tr>
-            <tr> <th>    </th> <td>\(h_j(x) \le 0,\) <td>\(j=1,...,n\)</tr>
+            <tr> <td>max:</td>  <td>\(f(x)\)</tr>
+            <tr> <td>s.t.,</td> <td>\(g_i(x)=0,\)     <td>\(i=1,...,m\)</tr>
+            <tr> <td>    </td>  <td>\(h_j(x) \le 0,\) <td>\(j=1,...,n\)</tr>
          </table>
       </p>
       <p>and the associated Lagrangian function is defined as:</p>
