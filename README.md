@@ -89,7 +89,7 @@ pip install Opt4Deck
       <code>
    @software{Opt4Deck,
       author = {Giannis Serafeim},
-      title  = {Opt4Deck: A New Optimization Platform},
+      title  = {Opt4Deck: A Python Library for Engineering Optimization},
       year   = {2025},
       note   = {Available at: https://github.com/Opt4Deck/Opt4Deck}
    }
