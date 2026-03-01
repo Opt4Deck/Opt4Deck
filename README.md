@@ -6,20 +6,20 @@
          <tr><th style='border-bottom: 2px solid;'>Module</th> <th style='border-bottom: 2px solid;'>Description</th> <th style='border-bottom: 2px solid;'>Estimated Release Date</th> <th style='border-bottom: 2px solid;'>Status</th></tr>
       </thead>
       <tbody>
-         <tr><th style='text-align: center;'><strong>SIMPLEX</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>November 30, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <tr><th style='text-align: center;'><strong>BFGS</strong>               </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 07, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <tr><th style='text-align: center;'><strong>GENETIC</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 14, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <tr><th style='text-align: center;'><strong>ADJOINT</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video</th> <th style='text-align: center;'>December 21, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <tr><th style='text-align: center;'><strong>PYPI PACKAGE</strong>       </th> <th style='text-align: center;'>Python package bundling all optimizers       </th> <th style='text-align: center;'>December 28, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <tr><th style='text-align: center;'><strong>TRICKS & TECHNIQUES</strong></th> <th style='text-align: center;'>supplementary techniques & optimization tips </th> <th style='text-align: center;'>January  04, 2026</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
-         <!--<tr><th style='text-align: center;'><strong>TRICKS & TECHNIQUES</strong></th> <th style='text-align: center;'>supplementary techniques & optimization tips </th> <th style='text-align: center;'>January  04, 2026</th> <th style='text-align: center;'><span style="color:#e63946; font-weight:800; font-size:1.2em;">❌</span></th></tr>-->
+         <tr><th style='text-align: center;'><strong>SIMPLEX</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video  </th> <th style='text-align: center;'>November 30, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>BFGS</strong>               </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video  </th> <th style='text-align: center;'>December 07, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>GENETIC</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video  </th> <th style='text-align: center;'>December 14, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>ADJOINT</strong>            </th> <th style='text-align: center;'>module, readme, manual, examples & demo-video  </th> <th style='text-align: center;'>December 21, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>PYPI PACKAGE</strong>       </th> <th style='text-align: center;'>Python package bundling all optimizers         </th> <th style='text-align: center;'>December 28, 2025</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>TRICKS & TECHNIQUES</strong></th> <th style='text-align: center;'>supplementary techniques & optimization tips   </th> <th style='text-align: center;'>January  04, 2026</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
+         <tr><th style='text-align: center;'><strong>Website</strong>            </th> <th style='text-align: center;'>Website: https://opt4deck-teal-orca.reflex.run </th> <th style='text-align: center;'>March    01, 2026</th> <th style='text-align: center;'><span style="color:#2a9d8f; font-weight:800; font-size:1.2em;">✔️ </span></th></tr>
       </tbody>
    </table>
    <h1>⬇️ Installation</h1>
    <p>Install Opt4Deck directly from the Python Package Index (PyPI):</p>
    <pre style='background: #f8f9fa; padding: 10px; border: 1px solid #ccc; border-radius: 6px;'>
       <code>
-pip install Opt4Deck
+pip install opt4deck
    </code>
    </pre>
    <br>
@@ -90,8 +90,8 @@ pip install Opt4Deck
    @software{Opt4Deck,
       author = {Giannis Serafeim},
       title  = {Opt4Deck: A Python Library for Engineering Optimization},
-      year   = {2025},
-      note   = {Available at: https://github.com/Opt4Deck/Opt4Deck}
+      year   = {2026},
+      note   = {Available at: https://opt4deck-teal-orca.reflex.run}
    }
       </code>
    </pre>
